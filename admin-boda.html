@@ -749,7 +749,7 @@
     btn.disabled = true;
 
     try {
-      const data = await apiPost({ action: 'addGuest', name, maxCompanions: parseInt(maxInput.value) || 3 });
+      const data = await apiPost({ action: 'addGuest', name, maxCompanions: parseInt(maxInput.value) >= 0 ? parseInt(maxInput.value) : 3 });
       if (data.success) {
         guests.push(data.guest);
         renderTable();
@@ -773,7 +773,7 @@
     const names = text.split('\n').map(n => n.trim()).filter(n => n.length > 0);
     if (names.length === 0) return;
 
-    const maxComp = parseInt(document.getElementById('maxCompanions').value) || 3;
+    const maxComp = parseInt(document.getElementById('maxCompanions').value) >= 0 ? parseInt(document.getElementById('maxCompanions').value) : 3;
     const btn = document.querySelector('.bulk-area .btn-secondary');
     btn.textContent = `Agregando ${names.length}...`;
     btn.disabled = true;
