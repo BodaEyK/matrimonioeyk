@@ -711,6 +711,7 @@
     showLoading('Cargando invitados...');
     try {
       const data = await apiGet({ action: 'getGuests' });
+      isLoading = false;
       if (data.success) {
         guests = data.guests;
         renderTable();
@@ -718,9 +719,9 @@
         alert('Error cargando invitados: ' + data.error);
       }
     } catch (err) {
+      isLoading = false;
       alert('Error de conexión. Verifica la URL del API.');
     }
-    isLoading = false;
   }
 
   // ======= LOAD STATS =======
