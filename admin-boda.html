@@ -449,9 +449,92 @@
     .qr-mini canvas, .qr-mini img { width: 35px !important; height: 35px !important; }
     .header-stats { gap: 1rem; }
   }
+  /* ======= ADMIN LOGIN ======= */
+  .admin-login {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--charcoal);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .admin-login.hidden { display: none; }
+
+  .admin-login h1 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold-light);
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .admin-login p {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+  }
+
+  .admin-login input {
+    padding: 0.9rem 1.5rem;
+    border: 1px solid rgba(212,168,67,0.3);
+    border-radius: 4px;
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+    outline: none;
+    width: 260px;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+  }
+
+  .admin-login input:focus { border-color: var(--gold-light); }
+
+  .admin-login button {
+    padding: 0.8rem 2.5rem;
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .admin-login button:hover { background: var(--sage-dark); }
+
+  .admin-login .login-error {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .admin-login .login-error.show { opacity: 1; }
+
 </style>
 </head>
 <body>
+
+<!-- ADMIN LOGIN SCREEN -->
+<div class="admin-login" id="adminLogin">
+  <h1>💍 Admin Boda E&K</h1>
+  <p>PANEL DE ADMINISTRACIÓN</p>
+  <input type="password" id="adminPassword" placeholder="Contraseña" autofocus>
+  <button onclick="adminLogin()">Ingresar</button>
+  <p class="login-error" id="loginError">Contraseña incorrecta</p>
+</div>
 
 <!-- HEADER -->
 <header class="admin-header">
@@ -564,9 +647,37 @@
 
 <script>
   // ============================================================
+  // CONTRASEÑA DEL ADMIN — Cámbiala por la que quieras
+  // ============================================================
+  const ADMIN_PASSWORD = 'EyK2026';
+
+  function adminLogin() {
+    const input = document.getElementById('adminPassword').value;
+    const error = document.getElementById('loginError');
+
+    if (input === ADMIN_PASSWORD) {
+      document.getElementById('adminLogin').classList.add('hidden');
+      sessionStorage.setItem('admin_logged', 'true');
+    } else {
+      error.classList.add('show');
+      setTimeout(() => error.classList.remove('show'), 2000);
+    }
+  }
+
+  // Enter key on password
+  document.getElementById('adminPassword').addEventListener('keypress', e => {
+    if (e.key === 'Enter') adminLogin();
+  });
+
+  // Check if already logged in this session
+  if (sessionStorage.getItem('admin_logged') === 'true') {
+    document.getElementById('adminLogin').classList.add('hidden');
+  }
+
+  // ============================================================
   // CONFIGURACIÓN
   // ============================================================
-  const API_URL = 'https://script.google.com/macros/s/AKfycbyjHGbVQNM3YaW_Xc5VufTxnUK_UtZrA2qVEsrMpMAgzvMVcp0r6M_459IvJDDnuiSm/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzqG8T73rECKv-QCdupu9stzLfafHH03QBERCdqxXFlwUtzla0ol_LtPg-wU9uH-tbD/exec';
   const ADMIN_KEY = 'EdgardoKiara2026Admin'; // Debe coincidir con el script de Google
 
   let guests = [];
