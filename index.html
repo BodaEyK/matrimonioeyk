@@ -1225,7 +1225,7 @@
   // ============================================================
   // CONFIGURACIÓN - PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
   // ============================================================
-  const API_URL = 'https://script.google.com/macros/s/AKfycbyjHGbVQNM3YaW_Xc5VufTxnUK_UtZrA2qVEsrMpMAgzvMVcp0r6M_459IvJDDnuiSm/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzqG8T73rECKv-QCdupu9stzLfafHH03QBERCdqxXFlwUtzla0ol_LtPg-wU9uH-tbD/exec';
   // Ejemplo: 'https://script.google.com/macros/s/AKfycbx.../exec'
 
   // ======= GLOBAL STATE =======
@@ -1286,9 +1286,15 @@
     // Set max companions dynamically
     const sel = document.getElementById('companionSelect');
     if (sel) {
-      sel.innerHTML = '<option value="" disabled selected>Acompañantes</option><option value="0">Iré solo(a)</option>';
-      for (let i = 1; i <= (guest.maxCompanions || 3); i++) {
-        sel.innerHTML += `<option value="${i}">+${i} acompañante${i > 1 ? 's' : ''}</option>`;
+      if (guest.maxCompanions === 0 || guest.maxCompanions === '0') {
+        // No companions allowed - hide the select and set value to 0
+        sel.parentElement.style.display = 'none';
+        sel.innerHTML = '<option value="0" selected>0</option>';
+      } else {
+        sel.innerHTML = '<option value="" disabled selected>Acompañantes</option><option value="0">Iré solo(a)</option>';
+        for (let i = 1; i <= (guest.maxCompanions || 3); i++) {
+          sel.innerHTML += `<option value="${i}">+${i} acompañante${i > 1 ? 's' : ''}</option>`;
+        }
       }
     }
 
@@ -1415,4 +1421,4 @@
 </script>
 
 </body>
-</html>
+                                                  </html>
