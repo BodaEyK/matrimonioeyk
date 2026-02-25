@@ -171,13 +171,13 @@
     opacity: 0;
   }
 
-  /* Vertical card container - phone-like aspect ratio */
+  /* Vertical card - phone aspect ratio */
   .envelope-card {
     position: relative;
     width: min(460px, 100vw);
     height: 100vh;
     max-height: 100vh;
-    background: linear-gradient(178deg, #f6f4f0 0%, #f2efeb 30%, #edebe6 60%, #e9e6e1 100%);
+    background: #8fa07e;
     box-shadow: 0 0 80px rgba(0,0,0,0.2);
     overflow: hidden;
     cursor: pointer;
@@ -186,11 +186,21 @@
     align-items: center;
   }
 
+  /* Subtle texture on green */
+  .envelope-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(170deg, rgba(255,255,255,0.1) 0%, transparent 40%, rgba(0,0,0,0.05) 100%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
   /* ---- Names at top ---- */
   .envelope-names {
-    margin-top: 12vh;
+    margin-top: 10vh;
     text-align: center;
-    z-index: 3;
+    z-index: 6;
     opacity: 0;
     transform: translateY(-15px);
     transition: all 0.9s ease 0.4s;
@@ -205,9 +215,10 @@
   .envelope-name-second {
     font-family: 'Great Vibes', cursive;
     font-size: clamp(3.2rem, 10vw, 4.5rem);
-    color: #b5b0a8;
+    color: rgba(255,255,255,0.55);
     display: block;
     line-height: 1.15;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.08);
   }
 
   .env-ampersand {
@@ -215,41 +226,37 @@
     font-style: italic;
     font-weight: 300;
     font-size: clamp(1.1rem, 3vw, 1.5rem);
-    color: #c4b078;
+    color: rgba(255,255,255,0.4);
     display: block;
     margin: 0.15em 0;
-    opacity: 0.7;
   }
 
-  /* ---- Bottom fold lines (V shape) ---- */
-  .envelope-folds {
+  /* ---- All fold lines via SVG ---- */
+  .envelope-fold-lines {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 65%;
+    inset: 0;
     z-index: 1;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.8s ease 0.3s;
   }
 
-  .envelope-screen.active .envelope-folds {
+  .envelope-screen.active .envelope-fold-lines {
     opacity: 1;
   }
 
-  .envelope-folds svg {
+  .envelope-fold-lines svg {
     width: 100%;
     height: 100%;
   }
 
-  /* ---- Top flap (V pointing down from top corners) ---- */
+  /* ---- Top flap ---- */
   .envelope-flap-area {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 52%;
+    height: 55%;
     z-index: 2;
     pointer-events: none;
     perspective: 1500px;
@@ -263,55 +270,32 @@
     height: 100%;
     transform-origin: top center;
     transform: rotateX(0deg);
-    transition: transform 1.4s cubic-bezier(0.4, 0, 0.15, 1);
+    transition: transform 1.6s cubic-bezier(0.4, 0, 0.15, 1);
     backface-visibility: hidden;
   }
 
+  /* Flap is same green but slightly different shade */
   .envelope-flap-face {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 100%;
-    background: linear-gradient(178deg, #efecea 0%, #eae8e4 40%, #e6e3de 80%, #e1ded8 100%);
+    background: #8fa07e;
     clip-path: polygon(0 0, 50% 92%, 100% 0);
   }
 
-  /* Subtle inner shadow on flap */
   .envelope-flap-face::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(178deg, rgba(255,255,255,0.4) 0%, transparent 30%, rgba(0,0,0,0.02) 90%);
+    background: linear-gradient(178deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.03) 70%, rgba(0,0,0,0.06) 100%);
     clip-path: polygon(0 0, 50% 92%, 100% 0);
   }
 
-  /* Flap edge line */
-  .envelope-flap-edge {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.8s ease 0.3s;
-  }
-
-  .envelope-screen.active .envelope-flap-edge {
-    opacity: 1;
-  }
-
-  .envelope-flap-edge svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Opened state */
+  /* Opened */
   .envelope-card.opened .envelope-flap {
     transform: rotateX(180deg);
-    transition: transform 1.6s cubic-bezier(0.4, 0, 0.15, 1);
   }
 
   /* ---- Wax Seal ---- */
@@ -322,7 +306,7 @@
     transform: translate(-50%, -50%);
     width: min(85px, 20vw);
     height: min(85px, 20vw);
-    z-index: 5;
+    z-index: 7;
     opacity: 0;
     transition: opacity 0.6s ease 0.9s, transform 0.6s ease;
   }
@@ -341,13 +325,9 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: 
-      radial-gradient(ellipse at 38% 32%, #dbb850 0%, #c9a12e 20%, #b8860b 45%, #9a7209 70%, #7d5f08 100%);
-    box-shadow: 
-      0 6px 25px rgba(139,105,20,0.45),
-      0 3px 10px rgba(0,0,0,0.2),
-      inset 0 3px 8px rgba(219,184,80,0.5),
-      inset 0 -3px 8px rgba(125,95,8,0.4);
+    background: radial-gradient(ellipse at 38% 32%, #dbb850 0%, #c9a12e 20%, #b8860b 45%, #9a7209 70%, #7d5f08 100%);
+    box-shadow: 0 6px 25px rgba(80,60,10,0.5), 0 3px 10px rgba(0,0,0,0.25),
+      inset 0 3px 8px rgba(219,184,80,0.5), inset 0 -3px 8px rgba(125,95,8,0.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -376,7 +356,7 @@
     line-height: 1;
   }
 
-  /* ---- CTA inside envelope, at bottom ---- */
+  /* ---- CTA ---- */
   .envelope-cta {
     position: absolute;
     bottom: 8vh;
@@ -394,15 +374,10 @@
     transform: translateY(0);
   }
 
-  .envelope-card.opened ~ .envelope-cta {
-    opacity: 0 !important;
-    transition: all 0.3s ease !important;
-  }
-
   .envelope-cta-line1 {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(1rem, 3vw, 1.15rem);
-    color: #8a8580;
+    color: rgba(255,255,255,0.5);
     font-style: italic;
     margin-bottom: 0.3rem;
   }
@@ -412,7 +387,7 @@
     font-size: clamp(0.6rem, 1.8vw, 0.75rem);
     letter-spacing: 5px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: rgba(255,255,255,0.7);
     font-weight: 500;
     animation: ctaPulse 2.5s ease-in-out infinite;
   }
@@ -1263,14 +1238,6 @@
     .form-row { grid-template-columns: 1fr; }
     .events-grid { grid-template-columns: 1fr; }
 
-    .envelope-card {
-      width: 100vw;
-    }
-
-    .envelope-names {
-      margin-top: 10vh;
-    }
-
     .envelope-seal {
       width: min(70px, 18vw);
       height: min(70px, 18vw);
@@ -1308,27 +1275,22 @@
       <span class="envelope-name-second">Kiara</span>
     </div>
 
-    <!-- Bottom V fold lines -->
-    <div class="envelope-folds">
-      <svg viewBox="0 0 460 500" preserveAspectRatio="none">
-        <!-- Left side to center -->
-        <line x1="0" y1="500" x2="230" y2="120" stroke="rgba(0,0,0,0.06)" stroke-width="0.7"/>
-        <!-- Right side to center -->
-        <line x1="460" y1="500" x2="230" y2="120" stroke="rgba(0,0,0,0.06)" stroke-width="0.7"/>
+    <!-- Fold lines - just subtle lines, no fills -->
+    <div class="envelope-fold-lines">
+      <svg viewBox="0 0 460 900" preserveAspectRatio="none">
+        <!-- Top flap edges (V from top corners to center) -->
+        <line x1="0" y1="0" x2="230" y2="480" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <line x1="460" y1="0" x2="230" y2="480" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <!-- Bottom fold (V from bottom corners to center) -->
+        <line x1="0" y1="900" x2="230" y2="480" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/>
+        <line x1="460" y1="900" x2="230" y2="480" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/>
       </svg>
     </div>
 
-    <!-- Top flap V -->
+    <!-- Top flap (same green, opens upward) -->
     <div class="envelope-flap-area">
       <div class="envelope-flap" id="envelopeFlap">
         <div class="envelope-flap-face"></div>
-      </div>
-      <!-- Flap edge lines -->
-      <div class="envelope-flap-edge">
-        <svg viewBox="0 0 460 380" preserveAspectRatio="none">
-          <line x1="0" y1="0" x2="230" y2="350" stroke="rgba(0,0,0,0.06)" stroke-width="0.7"/>
-          <line x1="460" y1="0" x2="230" y2="350" stroke="rgba(0,0,0,0.06)" stroke-width="0.7"/>
-        </svg>
       </div>
     </div>
 
@@ -1339,7 +1301,7 @@
       </div>
     </div>
 
-    <!-- CTA inside the card -->
+    <!-- CTA -->
     <div class="envelope-cta">
       <p class="envelope-cta-line1">Tenemos una noticia...</p>
       <p class="envelope-cta-line2">¡Pulsa aquí y desliza!</p>
