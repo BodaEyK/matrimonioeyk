@@ -186,16 +186,6 @@
     align-items: center;
   }
 
-  /* Subtle texture on green */
-  .envelope-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(170deg, rgba(255,255,255,0.1) 0%, transparent 40%, rgba(0,0,0,0.05) 100%);
-    z-index: 0;
-    pointer-events: none;
-  }
-
   /* ---- Names at top ---- */
   .envelope-names {
     margin-top: 10vh;
@@ -274,7 +264,7 @@
     backface-visibility: hidden;
   }
 
-  /* Flap is same green but slightly different shade */
+  /* Flap is same green, invisible when closed */
   .envelope-flap-face {
     position: absolute;
     top: 0;
@@ -282,14 +272,6 @@
     right: 0;
     height: 100%;
     background: #8fa07e;
-    clip-path: polygon(0 0, 50% 92%, 100% 0);
-  }
-
-  .envelope-flap-face::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(178deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.03) 70%, rgba(0,0,0,0.06) 100%);
     clip-path: polygon(0 0, 50% 92%, 100% 0);
   }
 
