@@ -270,8 +270,8 @@
 
   .envelope-card.opened .envelope-seal {
     opacity: 0;
-    transform: scale(0.3) rotate(60deg);
-    transition: all 0.5s cubic-bezier(0.4, 0, 1, 1);
+    transform: translateY(-120vh);
+    transition: transform 1.6s cubic-bezier(0.4, 0, 0.15, 1), opacity 0.5s ease 1s;
   }
 
   .seal-circle {
@@ -1305,7 +1305,7 @@
       </div>
       <div class="envelope-cta">
         <p class="envelope-cta-line1">Tenemos una noticia...</p>
-        <p class="envelope-cta-line2">¡Pulsa el sello y desliza!</p>
+        <p class="envelope-cta-line2">¡Pulsa aquí y desliza!</p>
       </div>
     </div>
 
@@ -1668,10 +1668,10 @@
     // Start music
     playMusic();
 
-    // Fondo transparente a 0.4s para ver la página
+    // Fondo transparente a 0.8s para ver la página
     setTimeout(() => {
       document.getElementById('envelopeScreen').style.background = 'transparent';
-    }, 400);
+    }, 800);
 
     // Después de que las solapas terminan, desactivar el screen
     setTimeout(() => {
