@@ -1305,7 +1305,7 @@
       </div>
       <div class="envelope-cta">
         <p class="envelope-cta-line1">Tenemos una noticia...</p>
-        <p class="envelope-cta-line2">¡Pulsa el sello y desliza!</p>
+        <p class="envelope-cta-line2">¡Pulsa aquí y desliza!</p>
       </div>
     </div>
 
@@ -1671,7 +1671,7 @@
     // Fondo transparente a 0.8s para ver la página
     setTimeout(() => {
       document.getElementById('envelopeScreen').style.background = 'transparent';
-    }, 400);
+    }, 800);
 
     // Después de que las solapas terminan, desactivar el screen
     setTimeout(() => {
@@ -1713,8 +1713,8 @@
         setupGuestForm(data.guest);
         sessionStorage.setItem('wedding_code', code);
 
+        showEnvelope();
         document.getElementById('lockScreen').classList.add('hidden');
-        setTimeout(showEnvelope, 400);
       } else {
         error.textContent = 'Código inválido. Verifica tu invitación.';
         error.classList.add('show');
