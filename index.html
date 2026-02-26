@@ -171,7 +171,7 @@
     opacity: 0;
   }
 
-  /* Main envelope container */
+  /* Main envelope container - lighter green = "inside" of envelope */
   .envelope-card {
     position: relative;
     overflow: hidden;
@@ -180,15 +180,13 @@
     max-width: 28rem;
     cursor: pointer;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    background-color: #9aad8a;
   }
 
   /* ---- Flaps container ---- */
   .envelope-flaps-container {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
+    inset: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -204,51 +202,77 @@
     bottom: 0;
   }
 
-  /* Shared flap style - rotated square */
+  /* Shared flap style */
   .envelope-flap-piece {
     position: absolute;
     height: 70vh;
     width: 70vh;
-    border: 1px solid #b8c4a8;
+    border: 1px solid rgba(255,255,255,0.2);
     background-color: #8fa07e;
     transform: rotate(45deg);
   }
 
-  /* Left flap - default z-index, edges peek below top flap */
+  /* Left flap */
   .flap-left {
     top: 10%;
     left: 50%;
     transform: translate(-100%, 5%) rotate(45deg);
   }
 
-  /* Right flap - default z-index */
+  /* Left flap - inner shadow gradient along right edge (the visible diagonal) */
+  .flap-left::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 60%, rgba(0,0,0,0.08) 90%, rgba(0,0,0,0.15) 100%);
+    pointer-events: none;
+  }
+
+  /* Right flap */
   .flap-right {
     top: 10%;
     left: 50%;
     transform: translate(0%, 5%) rotate(45deg);
   }
 
-  /* Bottom flap - on top of side flaps */
+  /* Right flap - inner shadow along left edge */
+  .flap-right::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-135deg, transparent 60%, rgba(0,0,0,0.08) 90%, rgba(0,0,0,0.15) 100%);
+    pointer-events: none;
+  }
+
+  /* Bottom flap - slightly darker green, on top of side flaps */
   .flap-bottom {
     bottom: 10%;
     left: 50%;
     transform: translate(-50%, 55%) rotate(45deg);
-    border-width: 2px;
-    border-radius: 1rem;
+    border-width: 1px;
+    border-radius: 0.75rem;
     z-index: 2;
+    background-color: #8a9b79;
   }
 
-  /* ---- Seal container - at intersection ---- */
+  /* Bottom flap - gradient shadow at top edge (the V pointing up) */
+  .flap-bottom::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0.75rem;
+    background: linear-gradient(to bottom right, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.04) 15%, transparent 40%);
+    pointer-events: none;
+  }
+
+  /* ---- Seal container - above top flap ---- */
   .envelope-seal-wrap {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 46;
+    z-index: 47;
     padding-top: 8vh;
   }
 
@@ -305,31 +329,34 @@
     line-height: 1;
   }
 
-  /* ---- Top flap (the one that opens) - HIGHEST z-index, on top of everything ---- */
+  /* ---- Top flap - darkest green, most prominent ---- */
   .envelope-top-flap {
     position: absolute;
-    display: flex;
     height: 70vh;
     width: 70vh;
-    align-items: flex-end;
-    justify-content: flex-end;
     top: 10%;
     left: 50%;
-    background-color: #8fa07e;
-    border: 2px solid #b8c4a8;
-    border-radius: 1rem;
+    background-color: #859673;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 0.75rem;
     z-index: 45;
-    box-shadow: 
-      7px 5px 16px 2px rgba(0,0,0,0.2),
-      0 3px 6px -1px rgba(0,0,0,0.12),
-      -4px 6px 14px rgba(0,0,0,0.12);
     opacity: 1;
     transform: translateX(-50%) translateY(-50%) rotate(45deg);
     will-change: transform;
     transition: transform 1.6s cubic-bezier(0.4, 0, 0.15, 1), opacity 0.3s ease;
   }
 
-  /* Opened: flap slides up and away */
+  /* Top flap - shadow gradient along bottom edge (the V pointing down) */
+  .envelope-top-flap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0.75rem;
+    background: linear-gradient(to top left, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.06) 12%, transparent 35%);
+    pointer-events: none;
+  }
+
+  /* Opened: flap slides up */
   .envelope-card.opened .envelope-top-flap {
     transform: translateX(-50%) translateY(-190%) rotate(45deg);
     opacity: 0;
@@ -418,7 +445,6 @@
     0%, 100% { opacity: 0.5; }
     50% { opacity: 1; }
   }
-
   /* ======= MUSIC PLAYER ======= */
   .music-btn {
     position: fixed;
@@ -1310,19 +1336,19 @@
         <!-- Bottom flap (rounded, on top) -->
         <div class="envelope-flap-piece flap-bottom"></div>
       </div>
-
-      <!-- Seal sits between bottom flap and top flap -->
-      <div class="envelope-seal-wrap">
-        <div class="envelope-seal" id="envelopeSeal">
-          <div class="seal-circle">
-            <span class="seal-icon">🌿</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Top flap (the one that animates open) -->
     <div class="envelope-top-flap" id="envelopeTopFlap"></div>
+
+    <!-- Seal - OUTSIDE flaps container, above top flap -->
+    <div class="envelope-seal-wrap">
+      <div class="envelope-seal" id="envelopeSeal">
+        <div class="seal-circle">
+          <span class="seal-icon">🌿</span>
+        </div>
+      </div>
+    </div>
 
     <!-- Names & CTA overlay -->
     <div class="envelope-content-overlay">
