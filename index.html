@@ -166,9 +166,9 @@
   }
 
   .envelope-screen.slide-up {
-    transition: opacity 0.8s ease;
+    transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease 0.9s;
+    transform: translateY(-100%);
     opacity: 0;
-    pointer-events: none;
   }
 
   /* Main envelope container — CAMBIO 1: sin cursor pointer */
@@ -1682,7 +1682,7 @@
     // CAMBIO 3: Hacer fondo transparente para ver la página detrás
     setTimeout(() => {
       document.getElementById('envelopeScreen').style.background = 'transparent';
-    }, 600);
+    }, 1000);
 
     // Después de que se abre la solapa, deslizar todo hacia arriba
     setTimeout(() => {
@@ -1701,7 +1701,7 @@
           document.getElementById('musicBtn').classList.add('visible');
         }
       }, 800);
-    }, 1400);
+    }, 2200);
   }
 
   function getUrlParam(param) {
