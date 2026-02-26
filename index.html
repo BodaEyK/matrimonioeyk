@@ -166,9 +166,9 @@
   }
 
   .envelope-screen.slide-up {
-    transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease 0.9s;
-    transform: translateY(-100%);
+    transition: opacity 0.8s ease;
     opacity: 0;
+    pointer-events: none;
   }
 
   /* Main envelope container — CAMBIO 1: sin cursor pointer */
@@ -201,6 +201,12 @@
     width: 100%;
     will-change: transform;
     bottom: 0;
+    transition: transform 1.4s cubic-bezier(0.4, 0, 0.15, 1), opacity 0.5s ease 0.8s;
+  }
+
+  .envelope-card.opened .envelope-flaps-inner {
+    transform: translateY(100vh);
+    opacity: 0;
   }
 
   /* Shared flap style - rotated square */
