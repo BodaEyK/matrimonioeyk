@@ -214,33 +214,28 @@
     transform: rotate(45deg);
   }
 
-  /* Left flap - sits ON TOP of the top flap */
+  /* Left flap - default z-index, edges peek below top flap */
   .flap-left {
     top: 10%;
     left: 50%;
-    transform: translate(-100%, -5%) rotate(45deg);
-    z-index: 2;
-    box-shadow: 6px -3px 14px rgba(0,0,0,0.18), 3px -1px 6px rgba(0,0,0,0.1);
+    transform: translate(-100%, 5%) rotate(45deg);
   }
 
-  /* Right flap - sits ON TOP of the top flap */
+  /* Right flap - default z-index */
   .flap-right {
     top: 10%;
     left: 50%;
-    transform: translate(0%, -5%) rotate(45deg);
-    z-index: 2;
-    box-shadow: -6px -3px 14px rgba(0,0,0,0.18), -3px -1px 6px rgba(0,0,0,0.1);
+    transform: translate(0%, 5%) rotate(45deg);
   }
 
-  /* Bottom flap - highest, on top of everything */
+  /* Bottom flap - on top of side flaps */
   .flap-bottom {
     bottom: 10%;
     left: 50%;
-    transform: translate(-50%, 45%) rotate(45deg);
+    transform: translate(-50%, 55%) rotate(45deg);
     border-width: 2px;
     border-radius: 1rem;
-    z-index: 4;
-    box-shadow: 0 -8px 20px rgba(0,0,0,0.18), 0 -3px 8px rgba(0,0,0,0.1);
+    z-index: 2;
   }
 
   /* ---- Seal container - at intersection ---- */
@@ -253,7 +248,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 5;
+    z-index: 46;
     padding-top: 8vh;
   }
 
@@ -310,7 +305,7 @@
     line-height: 1;
   }
 
-  /* ---- Top flap (the one that opens) - goes BEHIND other flaps ---- */
+  /* ---- Top flap (the one that opens) - HIGHEST z-index, on top of everything ---- */
   .envelope-top-flap {
     position: absolute;
     display: flex;
@@ -323,13 +318,13 @@
     background-color: #8fa07e;
     border: 2px solid #b8c4a8;
     border-radius: 1rem;
-    z-index: 1;
+    z-index: 45;
     box-shadow: 
       7px 5px 16px 2px rgba(0,0,0,0.2),
       0 3px 6px -1px rgba(0,0,0,0.12),
       -4px 6px 14px rgba(0,0,0,0.12);
     opacity: 1;
-    transform: translateX(-50%) translateY(-55%) rotate(45deg);
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
     will-change: transform;
     transition: transform 1.6s cubic-bezier(0.4, 0, 0.15, 1), opacity 0.3s ease;
   }
