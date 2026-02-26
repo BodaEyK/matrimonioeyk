@@ -166,9 +166,8 @@
   }
 
   .envelope-screen.slide-up {
-    transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease 0.9s;
-    transform: translateY(-100%);
-    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   /* Main envelope container — CAMBIO 1: sin cursor pointer */
@@ -207,7 +206,7 @@
   .envelope-card.opened .envelope-flaps-inner {
     transform: translateY(100vh);
     opacity: 0;
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.15, 1) 0.8s, opacity 0.4s ease 1.6s;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.15, 1) 1.0s, opacity 0.4s ease 1.8s;
   }
 
   /* Shared flap style - rotated square */
@@ -263,14 +262,10 @@
     width: min(100px, 20vw);
     height: min(100px, 20vw);
     z-index: 7;
-    opacity: 0;
-    transition: opacity 0.6s ease 0.9s, transform 0.8s ease;
+    opacity: 1;
+    transition: transform 0.8s ease;
     cursor: pointer;
     pointer-events: all;
-  }
-
-  .envelope-screen.active .envelope-seal {
-    opacity: 1;
   }
 
   .envelope-card.opened .envelope-seal {
@@ -337,14 +332,8 @@
   .envelope-names {
     margin-top: 10vh;
     text-align: center;
-    opacity: 0;
-    transform: translateY(-15px);
-    transition: all 0.9s ease 0.4s;
-  }
-
-  .envelope-screen.active .envelope-names {
     opacity: 1;
-    transform: translateY(0);
+    transition: opacity 0.5s ease;
   }
 
   .envelope-name-first,
@@ -1679,29 +1668,27 @@
     // Start music
     playMusic();
 
-    // CAMBIO 3: Hacer fondo transparente para ver la página detrás
+    // Fondo transparente a 0.8s para ver la página
     setTimeout(() => {
       document.getElementById('envelopeScreen').style.background = 'transparent';
-    }, 1000);
+    }, 800);
 
-    // Después de que se abre la solapa, deslizar todo hacia arriba
+    // Después de que las solapas terminan, desactivar el screen
     setTimeout(() => {
       const envelopeScreen = document.getElementById('envelopeScreen');
       envelopeScreen.classList.add('slide-up');
 
-      setTimeout(() => {
-        if (currentGuest) {
-          const banner = document.getElementById('welcomeBanner');
-          banner.textContent = `✨ ¡Bienvenido(a), ${currentGuest.name}! Estamos felices de contar contigo ✨`;
-          banner.classList.add('show');
-          setTimeout(() => banner.classList.remove('show'), 5000);
-        }
+      if (currentGuest) {
+        const banner = document.getElementById('welcomeBanner');
+        banner.textContent = `✨ ¡Bienvenido(a), ${currentGuest.name}! Estamos felices de contar contigo ✨`;
+        banner.classList.add('show');
+        setTimeout(() => banner.classList.remove('show'), 5000);
+      }
 
-        if (MUSIC_GOOGLE_DRIVE_ID && !musicPlaying) {
-          document.getElementById('musicBtn').classList.add('visible');
-        }
-      }, 800);
-    }, 2200);
+      if (MUSIC_GOOGLE_DRIVE_ID && !musicPlaying) {
+        document.getElementById('musicBtn').classList.add('visible');
+      }
+    }, 2500);
   }
 
   function getUrlParam(param) {
