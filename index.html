@@ -171,14 +171,13 @@
     opacity: 0;
   }
 
-  /* Main envelope container */
+  /* Main envelope container — CAMBIO 1: sin cursor pointer */
   .envelope-card {
     position: relative;
     overflow: hidden;
     width: min(460px, 100vw);
     height: 100vh;
     max-width: 28rem;
-    cursor: pointer;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   }
 
@@ -214,14 +213,14 @@
     transform: rotate(45deg);
   }
 
-  /* Left flap - default z-index, edges peek below top flap */
+  /* Left flap */
   .flap-left {
     top: 10%;
     left: 50%;
     transform: translate(-100%, 5%) rotate(45deg);
   }
 
-  /* Right flap - default z-index */
+  /* Right flap */
   .flap-right {
     top: 10%;
     left: 50%;
@@ -238,7 +237,7 @@
     z-index: 2;
   }
 
-  /* ---- Seal container - at intersection ---- */
+  /* ---- Seal container ---- */
   .envelope-seal-wrap {
     position: absolute;
     top: 0;
@@ -250,6 +249,7 @@
     justify-content: center;
     z-index: 46;
     padding-top: 8vh;
+    pointer-events: none;
   }
 
   .envelope-seal {
@@ -258,6 +258,8 @@
     z-index: 7;
     opacity: 0;
     transition: opacity 0.6s ease 0.9s, transform 0.8s ease;
+    cursor: pointer;
+    pointer-events: all;
   }
 
   .envelope-screen.active .envelope-seal {
@@ -284,7 +286,7 @@
     line-height: 1;
   }
 
-  /* ---- Top flap (the one that opens) - HIGHEST z-index, on top of everything ---- */
+  /* ---- Top flap ---- */
   .envelope-top-flap {
     position: absolute;
     display: flex;
@@ -308,7 +310,6 @@
     transition: transform 1.6s cubic-bezier(0.4, 0, 0.15, 1), opacity 0.3s ease;
   }
 
-  /* Opened: flap slides up and away */
   .envelope-card.opened .envelope-top-flap {
     transform: translateX(-50%) translateY(-190%) rotate(45deg);
     opacity: 0;
@@ -438,7 +439,6 @@
   .music-btn:not(.playing) .music-icon-pause { display: none; }
   .music-btn:not(.playing) .music-icon-play { display: block; }
 
-  /* Sound wave animation for playing state */
   .music-bars {
     display: flex;
     align-items: flex-end;
@@ -1277,27 +1277,25 @@
 
 <!-- ENVELOPE SCREEN -->
 <div class="envelope-screen" id="envelopeScreen">
-  <div class="envelope-card" id="envelopeContainer" onclick="openEnvelope()">
+  <!-- CAMBIO 1: Sin onclick aquí -->
+  <div class="envelope-card" id="envelopeContainer">
 
     <!-- Flaps made of rotated squares -->
     <div class="envelope-flaps-container">
       <div class="envelope-flaps-inner">
-        <!-- Left flap -->
         <div class="envelope-flap-piece flap-left"></div>
-        <!-- Right flap -->
         <div class="envelope-flap-piece flap-right"></div>
-        <!-- Bottom flap (rounded, on top) -->
         <div class="envelope-flap-piece flap-bottom"></div>
       </div>
     </div>
-    <!-- Seal sits between bottom flap and top flap -->
-      <div class="envelope-seal-wrap">
-        <div class="envelope-seal" id="envelopeSeal">
-          <div class="seal-circle">
-            <img src="sello_E&K.png" class="seal-icon" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));">
-          </div>
+    <!-- CAMBIO 1: onclick en el sello -->
+    <div class="envelope-seal-wrap">
+      <div class="envelope-seal" id="envelopeSeal" onclick="openEnvelope()">
+        <div class="seal-circle">
+          <img src="sello_E&K.png" class="seal-icon" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));">
         </div>
       </div>
+    </div>
 
     <!-- Top flap (the one that animates open) -->
     <div class="envelope-top-flap" id="envelopeTopFlap"></div>
@@ -1320,19 +1318,6 @@
 
 <!-- MUSIC PLAYER -->
 <audio id="bgMusic" loop preload="auto">
-  <!-- 
-    ===================================================================
-    CONFIGURA TU MÚSICA AQUÍ
-    ===================================================================
-    Sube tu archivo de música a Google Drive, compártelo como 
-    "Cualquier persona con el enlace" y obtén el ID del archivo.
-    
-    El enlace de Google Drive se ve así:
-    https://drive.google.com/file/d/TU_ID_AQUI/view
-    
-    Reemplaza TU_ID_AQUI en la línea de abajo:
-    ===================================================================
-  -->
   <source src="" type="audio/mpeg" id="musicSource">
 </audio>
 
@@ -1444,41 +1429,20 @@
   <h2 class="section-title">Galería</h2>
   <div class="section-ornament"><span>momentos</span></div>
 
-  <!-- 
-    ===================================================================
-    CONFIGURA TUS FOTOS DE GOOGLE DRIVE AQUÍ
-    ===================================================================
-    Para cada foto:
-    1. Sube la imagen a Google Drive
-    2. Clic derecho > Compartir > "Cualquier persona con el enlace"
-    3. Copia el ID del enlace (la parte entre /d/ y /view)
-    4. Usa este formato: https://lh3.googleusercontent.com/d/TU_ID_AQUI
-    
-    Ejemplo: Si tu enlace es:
-    https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUv/view
-    Entonces la URL de la imagen es:
-    https://lh3.googleusercontent.com/d/1AbCdEfGhIjKlMnOpQrStUv
-    ===================================================================
-  -->
   <div class="gallery-grid">
     <div class="gallery-item">
-      <!-- <img src="https://lh3.googleusercontent.com/d/TU_ID_FOTO_1" alt="Nuestra foto"> -->
       <span class="gallery-placeholder">Nuestra foto</span>
     </div>
     <div class="gallery-item">
-      <!-- <img src="https://lh3.googleusercontent.com/d/TU_ID_FOTO_2" alt="Juntos"> -->
       <span class="gallery-placeholder">Juntos</span>
     </div>
     <div class="gallery-item">
-      <!-- <img src="https://lh3.googleusercontent.com/d/TU_ID_FOTO_3" alt="Aventuras"> -->
       <span class="gallery-placeholder">Aventuras</span>
     </div>
     <div class="gallery-item">
-      <!-- <img src="https://lh3.googleusercontent.com/d/TU_ID_FOTO_4" alt="El compromiso"> -->
       <span class="gallery-placeholder">El compromiso</span>
     </div>
     <div class="gallery-item">
-      <!-- <img src="https://lh3.googleusercontent.com/d/TU_ID_FOTO_5" alt="Recuerdos"> -->
       <span class="gallery-placeholder">Recuerdos</span>
     </div>
   </div>
@@ -1629,24 +1593,14 @@
 </footer>
 
 <script>
-  // ============================================================
-  // CONFIGURACIÓN
-  // ============================================================
   const API_URL = 'https://script.google.com/macros/s/AKfycbzqG8T73rECKv-QCdupu9stzLfafHH03QBERCdqxXFlwUtzla0ol_LtPg-wU9uH-tbD/exec';
 
-  // ============================================================
-  // MÚSICA - Pon aquí el ID de tu archivo de Google Drive
-  // ============================================================
   const MUSIC_GOOGLE_DRIVE_ID = ''; 
-  // Ejemplo: '1AbCdEfGhIjKlMnOpQrStUv'
-  // Deja vacío '' si aún no tienes la música
 
-  // ======= GLOBAL STATE =======
   let currentGuest = null;
   let musicPlaying = false;
   let envelopeOpened = false;
 
-  // ======= MUSIC SETUP =======
   function setupMusic() {
     if (!MUSIC_GOOGLE_DRIVE_ID) return;
     const source = document.getElementById('musicSource');
@@ -1662,7 +1616,6 @@
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise.then(() => {
-        // Fade in
         let vol = 0;
         const fadeIn = setInterval(() => {
           vol = Math.min(vol + 0.05, 0.6);
@@ -1672,7 +1625,6 @@
         musicPlaying = true;
         document.getElementById('musicBtn').classList.add('playing', 'visible');
       }).catch(() => {
-        // Autoplay blocked - show play button
         document.getElementById('musicBtn').classList.add('visible');
       });
     }
@@ -1697,7 +1649,6 @@
 
   setupMusic();
 
-  // ======= ENVELOPE LOGIC =======
   function showEnvelope() {
     const envelopeScreen = document.getElementById('envelopeScreen');
     envelopeScreen.classList.add('active');
@@ -1710,19 +1661,27 @@
     const card = document.getElementById('envelopeContainer');
     card.classList.add('opened');
 
-    // Hide CTA
+    // CAMBIO 2: Ocultar nombres al abrir
+    const names = document.querySelector('.envelope-names');
+    if (names) { names.style.opacity = '0'; names.style.transition = 'opacity 0.5s ease'; }
+
+    // Ocultar CTA
     const cta = document.querySelector('.envelope-cta');
     if (cta) { cta.style.opacity = '0'; cta.style.transition = 'opacity 0.4s ease'; }
 
-    // Start music on this user interaction (bypasses autoplay block)
+    // Start music
     playMusic();
 
-    // After flap opens, slide the whole envelope screen up
+    // CAMBIO 3: Hacer fondo transparente para ver la página detrás
+    setTimeout(() => {
+      document.getElementById('envelopeScreen').style.background = 'transparent';
+    }, 600);
+
+    // Después de que se abre la solapa, deslizar todo hacia arriba
     setTimeout(() => {
       const envelopeScreen = document.getElementById('envelopeScreen');
       envelopeScreen.classList.add('slide-up');
 
-      // After envelope slides away
       setTimeout(() => {
         if (currentGuest) {
           const banner = document.getElementById('welcomeBanner');
@@ -1731,7 +1690,6 @@
           setTimeout(() => banner.classList.remove('show'), 5000);
         }
 
-        // Show music button if music wasn't auto-started
         if (MUSIC_GOOGLE_DRIVE_ID && !musicPlaying) {
           document.getElementById('musicBtn').classList.add('visible');
         }
@@ -1739,7 +1697,6 @@
     }, 1400);
   }
 
-  // ======= ACCESS VALIDATION (API) =======
   function getUrlParam(param) {
     return new URLSearchParams(window.location.search).get(param);
   }
@@ -1762,7 +1719,6 @@
         setupGuestForm(data.guest);
         sessionStorage.setItem('wedding_code', code);
 
-        // Hide lock screen → Show envelope
         document.getElementById('lockScreen').classList.add('hidden');
         setTimeout(showEnvelope, 400);
       } else {
@@ -1785,11 +1741,9 @@
   }
 
   function setupGuestForm(guest) {
-    // Auto-fill and lock the name
     const rsvpName = document.querySelector('#rsvpForm input[type="text"]');
     if (rsvpName) { rsvpName.value = guest.name; rsvpName.readOnly = true; rsvpName.style.opacity = '0.7'; }
 
-    // Set max companions dynamically
     const sel = document.getElementById('companionSelect');
     if (sel) {
       if (guest.maxCompanions === 0 || guest.maxCompanions === '0') {
@@ -1803,7 +1757,6 @@
       }
     }
 
-    // Show note if already confirmed
     if (guest.alreadyConfirmed) {
       const note = document.createElement('p');
       note.style.cssText = 'text-align:center;color:var(--sage-dark);font-family:Cormorant Garamond,serif;font-size:1.05rem;font-style:italic;margin-bottom:1rem;';
@@ -1813,7 +1766,6 @@
     }
   }
 
-  // Auto-validate from URL or session
   (async () => {
     const urlCode = getUrlParam('c');
     const savedCode = sessionStorage.getItem('wedding_code');
@@ -1825,11 +1777,9 @@
     if (e.key === 'Enter') validateCode();
   });
 
-  // ======= NAVBAR SCROLL =======
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 80));
 
-  // ======= COUNTDOWN =======
   const weddingDate = new Date('2026-04-18T16:00:00').getTime();
   function updateCountdown() {
     const diff = weddingDate - Date.now();
@@ -1842,13 +1792,11 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  // ======= SCROLL REVEAL =======
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
 
-  // ======= SMOOTH SCROLL =======
   document.querySelectorAll('nav a').forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
@@ -1856,7 +1804,6 @@
     });
   });
 
-  // ======= RSVP FORM → API =======
   document.getElementById('rsvpForm').addEventListener('submit', async e => {
     e.preventDefault();
     if (!currentGuest) return alert('Error: No se ha validado tu código.');
@@ -1902,7 +1849,6 @@
     }
   });
 
-  // ======= FALLING PETALS =======
   function createPetal() {
     const p = document.createElement('div');
     p.classList.add('petal');
