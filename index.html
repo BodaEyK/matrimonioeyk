@@ -412,7 +412,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
     transition: all 0.3s ease;
     opacity: 0;
     visibility: hidden;
@@ -426,9 +425,6 @@
   }
 
   .music-btn:hover { transform: scale(1.1); }
-
-  .music-btn .music-icon-play,
-  .music-btn .music-icon-pause { line-height: 1; }
 
   .music-btn.playing .music-icon-pause { display: flex; }
   .music-btn.playing .music-icon-play  { display: none; }
@@ -500,9 +496,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
-    animation: scrollBounce 1.6s ease-in-out infinite;
     flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .scroll-indicator-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    animation: scrollBounce 1.4s ease-in-out infinite;
   }
 
   .scroll-indicator-label {
@@ -510,13 +512,15 @@
     font-size: 0.65rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: rgba(40,40,40,0.75);
+    color: #ffffff;
     font-weight: 500;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
   }
 
   @keyframes scrollBounce {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(5px); }
+    0%   { transform: translateY(-4px); opacity: 0.6; }
+    50%  { transform: translateY(4px);  opacity: 1; }
+    100% { transform: translateY(-4px); opacity: 0.6; }
   }
 
   /* ======= WELCOME BANNER ======= */
@@ -1306,7 +1310,7 @@
 
     .music-btn { bottom: 1.5rem; right: 1rem; width: 42px; height: 42px; }
     .scroll-indicator { bottom: 1.5rem; left: 1rem; }
-    .scroll-indicator-icon { width: 42px; height: 42px; font-size: 1.1rem; }
+    .scroll-indicator-icon { width: 42px; height: 42px; }
   }
 </style>
 </head>
@@ -1382,7 +1386,9 @@
 
 <!-- SCROLL INDICATOR -->
 <div class="scroll-indicator" id="scrollIndicator">
-  <div class="scroll-indicator-icon">👇</div>
+  <div class="scroll-indicator-icon">
+    <img src="desliza.png" alt="desliza">
+  </div>
   <span class="scroll-indicator-label">Desliza</span>
 </div>
 
@@ -1746,8 +1752,6 @@
       if (!musicPlaying) {
         document.getElementById('musicBtn').classList.add('visible');
       }
-
-      // Mostrar indicador de deslizar
       const scrollIndicator = document.getElementById('scrollIndicator');
       if (scrollIndicator) scrollIndicator.classList.add('visible');
     }, 2500);
@@ -1836,10 +1840,10 @@
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 80);
-    const scrollIndicator = document.getElementById('scrollIndicator');
-    if (scrollIndicator && window.scrollY > 30) {
-      scrollIndicator.classList.remove('visible');
-      scrollIndicator.classList.add('hidden');
+    const si = document.getElementById('scrollIndicator');
+    if (si && window.scrollY > 30) {
+      si.classList.remove('visible');
+      si.classList.add('hidden');
     }
   });
 
