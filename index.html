@@ -399,19 +399,20 @@
   .music-btn {
     position: fixed;
     bottom: 2rem;
-    right: 2rem;
-    width: 48px;
-    height: 48px;
+    right: 1.5rem;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-    background: var(--white);
-    border: 1px solid rgba(184,134,11,0.2);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    background: rgba(40, 40, 40, 0.75);
+    backdrop-filter: blur(6px);
+    border: none;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
     cursor: pointer;
     z-index: 1002;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     transition: all 0.3s ease;
     opacity: 0;
     visibility: hidden;
@@ -424,16 +425,15 @@
     transform: scale(1);
   }
 
-  .music-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(0,0,0,0.12);
-    border-color: var(--gold-light);
-  }
+  .music-btn:hover { transform: scale(1.1); }
 
-  .music-btn.playing .music-icon-pause { display: block; }
-  .music-btn.playing .music-icon-play { display: none; }
+  .music-btn .music-icon-play,
+  .music-btn .music-icon-pause { line-height: 1; }
+
+  .music-btn.playing .music-icon-pause { display: flex; }
+  .music-btn.playing .music-icon-play  { display: none; }
   .music-btn:not(.playing) .music-icon-pause { display: none; }
-  .music-btn:not(.playing) .music-icon-play { display: block; }
+  .music-btn:not(.playing) .music-icon-play  { display: flex; }
 
   .music-bars {
     display: flex;
@@ -445,24 +445,78 @@
   .music-bars span {
     display: block;
     width: 3px;
-    background: var(--gold);
+    background: #fff;
     border-radius: 2px;
     animation: musicBar 1s ease-in-out infinite;
   }
 
-  .music-bars span:nth-child(1) { height: 8px; animation-delay: 0s; }
+  .music-bars span:nth-child(1) { height: 8px;  animation-delay: 0s; }
   .music-bars span:nth-child(2) { height: 14px; animation-delay: 0.15s; }
   .music-bars span:nth-child(3) { height: 10px; animation-delay: 0.3s; }
   .music-bars span:nth-child(4) { height: 16px; animation-delay: 0.45s; }
 
   @keyframes musicBar {
     0%, 100% { transform: scaleY(0.4); }
-    50% { transform: scaleY(1); }
+    50%       { transform: scaleY(1); }
   }
 
-  .music-icon-play {
-    color: var(--gold);
-    font-size: 1.1rem;
+  .music-icon-play { color: #fff; font-size: 1.1rem; }
+
+  /* ======= SCROLL INDICATOR ======= */
+  .scroll-indicator {
+    position: fixed;
+    bottom: 2rem;
+    left: 1.5rem;
+    z-index: 1003;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s ease;
+    pointer-events: none;
+  }
+
+  .scroll-indicator.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .scroll-indicator.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+  }
+
+  .scroll-indicator-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(40, 40, 40, 0.75);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    animation: scrollBounce 1.6s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  .scroll-indicator-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(40,40,40,0.75);
+    font-weight: 500;
+  }
+
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(5px); }
   }
 
   /* ======= WELCOME BANNER ======= */
@@ -1207,55 +1261,6 @@
     font-size: 1rem;
   }
 
-  /* ======= SCROLL INDICATOR ======= */
-  .scroll-indicator {
-    position: fixed;
-    bottom: 2.2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    z-index: 1003;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s ease;
-    pointer-events: none;
-  }
-
-  .scroll-indicator.visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  .scroll-indicator.hidden {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-50%) translateY(10px);
-  }
-
-  .scroll-indicator-text {
-    font-family: 'Josefin Sans', sans-serif;
-    font-size: 0.6rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-light);
-    opacity: 0.7;
-  }
-
-  .scroll-indicator-arrow {
-    font-size: 1.1rem;
-    color: var(--gold);
-    animation: scrollBounce 1.6s ease-in-out infinite;
-  }
-
-  @keyframes scrollBounce {
-    0%, 100% { transform: translateY(0); opacity: 0.5; }
-    50% { transform: translateY(5px); opacity: 1; }
-  }
-
   /* ======= RESPONSIVE ======= */
   @media (max-width: 768px) {
     nav { gap: 1.2rem; flex-wrap: wrap; padding: 1rem; }
@@ -1299,7 +1304,9 @@
       width: 65vh;
     }
 
-    .music-btn { bottom: 1.5rem; right: 1.5rem; width: 42px; height: 42px; }
+    .music-btn { bottom: 1.5rem; right: 1rem; width: 42px; height: 42px; }
+    .scroll-indicator { bottom: 1.5rem; left: 1rem; }
+    .scroll-indicator-icon { width: 42px; height: 42px; font-size: 1.1rem; }
   }
 </style>
 </head>
@@ -1362,9 +1369,7 @@
 </div>
 
 <!-- MUSIC PLAYER -->
-<audio id="bgMusic" loop preload="auto">
-  <source src="" type="audio/mpeg" id="musicSource">
-</audio>
+<audio id="bgMusic" loop preload="auto"></audio>
 
 <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Música">
   <div class="music-icon-pause">
@@ -1377,8 +1382,8 @@
 
 <!-- SCROLL INDICATOR -->
 <div class="scroll-indicator" id="scrollIndicator">
-  <span class="scroll-indicator-text">Desliza</span>
-  <span class="scroll-indicator-arrow">↓</span>
+  <div class="scroll-indicator-icon">👇</div>
+  <span class="scroll-indicator-label">Desliza</span>
 </div>
 
 <!-- WELCOME BANNER -->
@@ -1646,7 +1651,6 @@
 <script>
   const API_URL = 'https://script.google.com/macros/s/AKfycbzqG8T73rECKv-QCdupu9stzLfafHH03QBERCdqxXFlwUtzla0ol_LtPg-wU9uH-tbD/exec';
 
-  // Nombre del archivo de audio en el repositorio (misma carpeta que index.html)
   const MUSIC_FILE = 'music.mp3';
 
   let currentGuest = null;
@@ -1654,14 +1658,13 @@
   let envelopeOpened = false;
 
   function setupMusic() {
-    const source = document.getElementById('musicSource');
-    source.src = MUSIC_FILE;
-    document.getElementById('bgMusic').load();
+    const audio = document.getElementById('bgMusic');
+    audio.src = MUSIC_FILE;
+    audio.load();
   }
 
   function playMusic() {
     const audio = document.getElementById('bgMusic');
-    if (!audio.src) return;
 
     audio.volume = 0;
     const playPromise = audio.play();
@@ -1746,7 +1749,7 @@
 
       // Mostrar indicador de deslizar
       const scrollIndicator = document.getElementById('scrollIndicator');
-      scrollIndicator.classList.add('visible');
+      if (scrollIndicator) scrollIndicator.classList.add('visible');
     }, 2500);
   }
 
@@ -1833,9 +1836,8 @@
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 80);
-    // Ocultar indicador de deslizar al primer scroll
     const scrollIndicator = document.getElementById('scrollIndicator');
-    if (window.scrollY > 30 && scrollIndicator.classList.contains('visible')) {
+    if (scrollIndicator && window.scrollY > 30) {
       scrollIndicator.classList.remove('visible');
       scrollIndicator.classList.add('hidden');
     }
