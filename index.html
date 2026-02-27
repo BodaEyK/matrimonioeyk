@@ -1207,6 +1207,55 @@
     font-size: 1rem;
   }
 
+  /* ======= SCROLL INDICATOR ======= */
+  .scroll-indicator {
+    position: fixed;
+    bottom: 2.2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    z-index: 1003;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s ease;
+    pointer-events: none;
+  }
+
+  .scroll-indicator.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .scroll-indicator.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(10px);
+  }
+
+  .scroll-indicator-text {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    opacity: 0.7;
+  }
+
+  .scroll-indicator-arrow {
+    font-size: 1.1rem;
+    color: var(--gold);
+    animation: scrollBounce 1.6s ease-in-out infinite;
+  }
+
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(5px); opacity: 1; }
+  }
+
   /* ======= RESPONSIVE ======= */
   @media (max-width: 768px) {
     nav { gap: 1.2rem; flex-wrap: wrap; padding: 1rem; }
@@ -1325,6 +1374,12 @@
   </div>
   <span class="music-icon-play">▶</span>
 </button>
+
+<!-- SCROLL INDICATOR -->
+<div class="scroll-indicator" id="scrollIndicator">
+  <span class="scroll-indicator-text">Desliza</span>
+  <span class="scroll-indicator-arrow">↓</span>
+</div>
 
 <!-- WELCOME BANNER -->
 <div class="welcome-banner" id="welcomeBanner"></div>
@@ -1591,22 +1646,22 @@
 <script>
   const API_URL = 'https://script.google.com/macros/s/AKfycbzqG8T73rECKv-QCdupu9stzLfafHH03QBERCdqxXFlwUtzla0ol_LtPg-wU9uH-tbD/exec';
 
-  const MUSIC_GOOGLE_DRIVE_ID = ''; 
+  // Nombre del archivo de audio en el repositorio (misma carpeta que index.html)
+  const MUSIC_FILE = 'music.mp3';
 
   let currentGuest = null;
   let musicPlaying = false;
   let envelopeOpened = false;
 
   function setupMusic() {
-    if (!MUSIC_GOOGLE_DRIVE_ID) return;
     const source = document.getElementById('musicSource');
-    source.src = `https://drive.google.com/uc?export=download&id=${MUSIC_GOOGLE_DRIVE_ID}`;
+    source.src = MUSIC_FILE;
     document.getElementById('bgMusic').load();
   }
 
   function playMusic() {
     const audio = document.getElementById('bgMusic');
-    if (!MUSIC_GOOGLE_DRIVE_ID || !audio.src) return;
+    if (!audio.src) return;
 
     audio.volume = 0;
     const playPromise = audio.play();
@@ -1685,9 +1740,13 @@
         setTimeout(() => banner.classList.remove('show'), 5000);
       }
 
-      if (MUSIC_GOOGLE_DRIVE_ID && !musicPlaying) {
+      if (!musicPlaying) {
         document.getElementById('musicBtn').classList.add('visible');
       }
+
+      // Mostrar indicador de deslizar
+      const scrollIndicator = document.getElementById('scrollIndicator');
+      scrollIndicator.classList.add('visible');
     }, 2500);
   }
 
@@ -1772,7 +1831,15 @@
   });
 
   const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 80));
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 80);
+    // Ocultar indicador de deslizar al primer scroll
+    const scrollIndicator = document.getElementById('scrollIndicator');
+    if (window.scrollY > 30 && scrollIndicator.classList.contains('visible')) {
+      scrollIndicator.classList.remove('visible');
+      scrollIndicator.classList.add('hidden');
+    }
+  });
 
   const weddingDate = new Date('2026-04-18T16:00:00').getTime();
   function updateCountdown() {
