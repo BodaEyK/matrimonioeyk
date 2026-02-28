@@ -1770,10 +1770,10 @@
     } else {
       pillsGroup.style.display = 'block';
       pillsContainer.innerHTML = '';
-      for (let i = 0; i <= max; i++) {
+      for (let i = 1; i <= max; i++) {
         const pill = document.createElement('button');
         pill.type = 'button';
-        pill.className = 'companion-pill' + (i === 0 ? ' selected' : '');
+        pill.className = 'companion-pill';
         pill.textContent = i;
         pill.dataset.value = i;
         pill.addEventListener('click', () => selectCompanions(i));
