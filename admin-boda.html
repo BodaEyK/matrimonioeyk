@@ -331,30 +331,6 @@
 
   .qr-mini canvas, .qr-mini img { width: 50px !important; height: 50px !important; }
 
-  /* ======= EXPORT SECTION ======= */
-  .export-section {
-    background: var(--white);
-    border-radius: 8px;
-    padding: 2rem;
-    margin-top: 2rem;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
-  }
-
-  .export-code {
-    background: var(--charcoal);
-    color: #a8e6a8;
-    padding: 1.5rem;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.8rem;
-    overflow-x: auto;
-    white-space: pre-wrap;
-    margin: 1rem 0;
-    max-height: 300px;
-    overflow-y: auto;
-    line-height: 1.5;
-  }
-
   /* ======= QR MODAL ======= */
   .modal-overlay {
     display: none;
@@ -449,6 +425,7 @@
     .qr-mini canvas, .qr-mini img { width: 35px !important; height: 35px !important; }
     .header-stats { gap: 1rem; }
   }
+
   /* ======= ADMIN LOGIN ======= */
   .admin-login {
     position: fixed;
@@ -522,7 +499,6 @@
   }
 
   .admin-login .login-error.show { opacity: 1; }
-
 </style>
 </head>
 <body>
@@ -568,7 +544,7 @@
       <label>URL base:</label>
       <input type="text" id="baseUrl" placeholder="https://bodaeyk.github.io/matrimonioeyk/" value="https://bodaeyk.github.io/matrimonioeyk/">
     </div>
-    <p class="url-hint">Esta es la URL donde hospedarás tu página. Los QR se generarán apuntando a esta dirección. Si aún no la tienes, puedes configurarla después.</p>
+    <p class="url-hint">Esta es la URL donde hospedarás tu página. Los QR se generarán apuntando a esta dirección.</p>
   </div>
 
   <!-- ADD GUEST -->
@@ -646,15 +622,11 @@
 </div>
 
 <script>
-  // ============================================================
-  // CONTRASEÑA DEL ADMIN — Cámbiala por la que quieras
-  // ============================================================
   const ADMIN_PASSWORD = 'EyK2026';
 
   function adminLogin() {
     const input = document.getElementById('adminPassword').value;
     const error = document.getElementById('loginError');
-
     if (input === ADMIN_PASSWORD) {
       document.getElementById('adminLogin').classList.add('hidden');
       sessionStorage.setItem('admin_logged', 'true');
@@ -664,27 +636,21 @@
     }
   }
 
-  // Enter key on password
   document.getElementById('adminPassword').addEventListener('keypress', e => {
     if (e.key === 'Enter') adminLogin();
   });
 
-  // Check if already logged in this session
   if (sessionStorage.getItem('admin_logged') === 'true') {
     document.getElementById('adminLogin').classList.add('hidden');
   }
 
-  // ============================================================
-  // CONFIGURACIÓN
-  // ============================================================
   const API_URL = 'https://script.google.com/macros/s/AKfycbzAXGmfqR6WJhtVToBuUr_ec52bwmSy0F6BilSup4X2xfWXDcUqKzIYD2uk6TGssi0/exec';
-  const ADMIN_KEY = 'EdgardoKiara2026Admin'; // Debe coincidir con el script de Google
+  const ADMIN_KEY = 'EdgardoKiara2026Admin';
 
   let guests = [];
   let currentModalGuest = null;
   let isLoading = false;
 
-  // ======= API HELPERS =======
   async function apiGet(params) {
     const query = new URLSearchParams({ ...params, adminKey: ADMIN_KEY }).toString();
     const res = await fetch(`${API_URL}?${query}`);
@@ -706,7 +672,6 @@
     document.getElementById('emptyState').style.display = 'block';
   }
 
-  // ======= LOAD GUESTS FROM API =======
   async function loadGuests() {
     showLoading('Cargando invitados...');
     try {
@@ -724,7 +689,6 @@
     }
   }
 
-  // ======= LOAD STATS =======
   async function loadStats() {
     try {
       const data = await apiGet({ action: 'getStats' });
@@ -737,7 +701,6 @@
     } catch (err) { /* silent */ }
   }
 
-  // ======= ADD GUEST =======
   async function addGuest() {
     const nameInput = document.getElementById('guestName');
     const maxInput = document.getElementById('maxCompanions');
@@ -767,7 +730,6 @@
     }
   }
 
-  // ======= BULK ADD =======
   async function bulkAdd() {
     const text = document.getElementById('bulkNames').value;
     const names = text.split('\n').map(n => n.trim()).filter(n => n.length > 0);
@@ -796,7 +758,6 @@
     }
   }
 
-  // ======= REMOVE GUEST =======
   async function removeGuest(code) {
     if (!confirm('¿Eliminar este invitado?')) return;
     try {
@@ -813,7 +774,6 @@
     }
   }
 
-  // ======= CLEAR ALL =======
   async function clearAll() {
     if (!confirm('⚠️ ¿Eliminar TODOS los invitados? No se puede deshacer.')) return;
     if (!confirm('🔴 ¿SEGURO? Esto borrará también todas las confirmaciones.')) return;
@@ -831,7 +791,6 @@
 
   function toggleBulk() { document.getElementById('bulkArea').classList.toggle('show'); }
 
-  // ======= RENDER TABLE =======
   function renderTable() {
     const tbody = document.getElementById('guestTableBody');
     const empty = document.getElementById('emptyState');
@@ -869,7 +828,6 @@
       </tr>
     `).join('');
 
-    // Generate mini QRs
     setTimeout(() => {
       filtered.forEach(g => {
         const el = document.getElementById(`qr-${g.code}`);
@@ -886,10 +844,9 @@
       const sep = base.includes('?') ? '&' : '?';
       return `${base}${sep}c=${code}`;
     }
-    return `boda-edgardo.html?c=${code}`;
+    return `https://bodaeyk.github.io/matrimonioeyk/?c=${code}`;
   }
 
-  // ======= QR MODAL =======
   function showQRModal(code) {
     const guest = guests.find(g => g.code === code);
     if (!guest) return;
@@ -976,20 +933,31 @@
       const data = await apiGet({ action: 'getRSVPs' });
       if (data.success && data.rsvps.length > 0) {
         section.innerHTML = `
-          <h2 style="font-family:Cormorant Garamond,serif;font-size:1.3rem;margin-bottom:1rem;">📋 Confirmaciones RSVP (${data.rsvps.length})</h2>
+          <h2 style="font-family:Cormorant Garamond,serif;font-size:1.3rem;padding:1.5rem 1rem 0.5rem;">📋 Confirmaciones RSVP (${data.rsvps.length})</h2>
+          <div style="overflow-x:auto;">
           <table>
-            <thead><tr><th>Nombre</th><th>¿Asiste?</th><th>Acompañantes</th><th>Restricción</th><th>Mensaje</th><th>Fecha</th></tr></thead>
+            <thead><tr>
+              <th>Nombre</th>
+              <th>¿Asiste?</th>
+              <th>Acomp.</th>
+              <th>Nombres Acompañantes</th>
+              <th>Música</th>
+              <th>Mensaje</th>
+              <th>Fecha</th>
+            </tr></thead>
             <tbody>${data.rsvps.map(r => `
               <tr>
                 <td><strong style="font-weight:400">${r.name}</strong></td>
                 <td style="color:${r.attending === 'si' ? 'var(--success)' : 'var(--danger)'}">${r.attending === 'si' ? '✅ Sí' : '❌ No'}</td>
-                <td>${r.companions || 0}</td>
-                <td>${r.restriction || '-'}</td>
-                <td style="font-size:0.8rem;max-width:200px">${r.message || '-'}</td>
+                <td style="text-align:center">${r.companions || 0}</td>
+                <td style="font-size:0.8rem">${r.companionNames || '-'}</td>
+                <td style="font-size:0.8rem">🎵 ${r.music || '-'}</td>
+                <td style="font-size:0.8rem;max-width:180px">${r.message || '-'}</td>
                 <td style="font-size:0.75rem;color:var(--text-light)">${r.confirmedAt || '-'}</td>
               </tr>`).join('')}
             </tbody>
-          </table>`;
+          </table>
+          </div>`;
       } else if (data.success) {
         section.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--text-light);">Aún no hay confirmaciones.</p>';
       }
