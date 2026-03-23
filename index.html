@@ -1322,6 +1322,58 @@
     .scroll-indicator-icon { width: 42px; height: 42px; }
     .scroll-indicator-icon img { width: 42px; height: 42px; }
   }
+
+  /* ======= BOTANICAL DECORATIONS ======= */
+  @keyframes botanicWind {
+    0%,100% { transform: rotate(0deg) translateX(0) translateY(0); }
+    20%     { transform: rotate(1.8deg) translateX(2px) translateY(-3px); }
+    40%     { transform: rotate(-1.5deg) translateX(-2px) translateY(2px); }
+    60%     { transform: rotate(2.2deg) translateX(1px) translateY(-2px); }
+    80%     { transform: rotate(-1deg) translateX(-1px) translateY(1px); }
+  }
+  @keyframes botanicWindSlow {
+    0%,100% { transform: rotate(0deg) translateX(0) translateY(0); }
+    25%     { transform: rotate(1.5deg) translateX(0) translateY(-3px); }
+    50%     { transform: rotate(-1.8deg) translateX(0) translateY(3px); }
+    75%     { transform: rotate(1deg) translateX(0) translateY(-1px); }
+  }
+  @keyframes botanicSway {
+    0%,100% { transform: rotate(0deg); }
+    30%     { transform: rotate(2deg); }
+    70%     { transform: rotate(-1.8deg); }
+  }
+
+  .botanic-wrap {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .anim-wind  { animation: botanicWind      6s ease-in-out infinite; }
+  .anim-windy { animation: botanicWindSlow  7.5s ease-in-out infinite; }
+  .anim-sway  { animation: botanicSway      9s ease-in-out infinite; }
+  .anim-d0 { animation-delay: 0s; }
+  .anim-d1 { animation-delay: -1.5s; }
+  .anim-d2 { animation-delay: -3s; }
+  .anim-d3 { animation-delay: -4.5s; }
+  .anim-d4 { animation-delay: -2s; }
+
+  /* position classes */
+  .bot-bl  { bottom: -10px;  left: -20px; transform-origin: left bottom; }
+  .bot-br  { bottom: -10px;  right: -20px; transform-origin: right bottom; }
+  .bot-tl  { top: 10px;  left: -20px; transform-origin: left top; }
+  .bot-tr  { top: 10px;  right: -20px; transform-origin: right top; }
+  .bot-ml  { top: 50%; left: -20px; transform: translateY(-50%); transform-origin: left center; }
+  .bot-mr  { top: 50%; right: -20px; transform: translateY(-50%); transform-origin: right center; }
+  .bot-flip { transform: scaleX(-1); }
+  .bot-flip-bl { bottom: -10px; right: -20px; transform-origin: right bottom; transform: scaleX(-1); }
+  .bot-flip-tl { top: 10px; right: -20px; transform-origin: right top; transform: scaleX(-1); }
+
+  .hero         { position: relative; overflow: hidden; }
+  .countdown-section { position: relative; overflow: hidden; }
+  .love-story   { position: relative; overflow: hidden; }
+  .event-details { position: relative; overflow: hidden; }
+  .gifts        { position: relative; overflow: hidden; }
+  footer        { position: relative; overflow: hidden; }
 </style>
 </head>
 <body>
@@ -1408,6 +1460,19 @@
 
 <!-- HERO -->
 <section class="hero" id="inicio">
+  <!-- Botanical decorations -->
+  <div class="botanic-wrap bot-bl">
+    <img src="Recurso_13.svg" width="150" class="anim-windy anim-d0" alt="">
+  </div>
+  <div class="botanic-wrap bot-flip-bl">
+    <img src="Recurso_13.svg" width="110" class="anim-windy anim-d3" alt="">
+  </div>
+  <div class="botanic-wrap bot-tr">
+    <img src="Recurso_14.svg" width="70" class="anim-sway anim-d1" alt="">
+  </div>
+  <div class="botanic-wrap bot-tl">
+    <img src="Recurso_14.svg" width="60" class="anim-sway anim-d4" style="transform:scaleX(-1);" alt="">
+  </div>
   <div class="hero-content">
     <p class="hero-subtitle">Estamos felices de invitarte a nuestra boda</p>
     <h1 class="hero-names">
@@ -1422,6 +1487,12 @@
 
 <!-- COUNTDOWN -->
 <section class="countdown-section" id="cuenta">
+  <div class="botanic-wrap bot-ml">
+    <img src="Recurso_8.svg" width="80" class="anim-wind anim-d2" alt="">
+  </div>
+  <div class="botanic-wrap bot-mr">
+    <img src="Recurso_8.svg" width="80" class="anim-wind anim-d0" style="transform:translateY(-50%) scaleX(-1);" alt="">
+  </div>
   <p class="section-title">Faltan</p>
   <div class="countdown-grid">
     <div class="countdown-item">
@@ -1445,6 +1516,12 @@
 
 <!-- LOVE STORY -->
 <section class="love-story" id="historia">
+  <div class="botanic-wrap bot-tl">
+    <img src="Recurso_13.svg" width="120" class="anim-windy anim-d1" alt="">
+  </div>
+  <div class="botanic-wrap bot-flip-bl">
+    <img src="Recurso_13.svg" width="100" class="anim-windy anim-d4" alt="">
+  </div>
   <h2 class="section-title">Nuestra Historia</h2>
   <div class="section-ornament"><span>de amor</span></div>
   <div class="timeline">
@@ -1501,6 +1578,12 @@
 
 <!-- EVENT DETAILS -->
 <section class="event-details" id="ceremonia">
+  <div class="botanic-wrap bot-tl">
+    <img src="Recurso_8.svg" width="90" class="anim-wind anim-d3" alt="">
+  </div>
+  <div class="botanic-wrap bot-flip-bl">
+    <img src="Recurso_8.svg" width="90" class="anim-wind anim-d0" alt="">
+  </div>
   <h2 class="section-title">La Celebración</h2>
   <div class="section-ornament"><span>detalles</span></div>
   <div class="events-grid">
@@ -1594,6 +1677,12 @@
 
 <!-- GIFTS -->
 <section class="gifts" id="regalos">
+  <div class="botanic-wrap bot-tl">
+    <img src="Recurso_14.svg" width="80" class="anim-sway anim-d2" alt="">
+  </div>
+  <div class="botanic-wrap bot-flip-tl">
+    <img src="Recurso_14.svg" width="80" class="anim-sway anim-d0" alt="">
+  </div>
   <h2 class="section-title">Mesa de Regalos</h2>
   <div class="section-ornament"><span>con cariño</span></div>
   <p class="gifts-message">
@@ -1616,6 +1705,12 @@
 
 <!-- FOOTER -->
 <footer>
+  <div class="botanic-wrap bot-bl">
+    <img src="Recurso_8.svg" width="80" class="anim-wind anim-d1" alt="">
+  </div>
+  <div class="botanic-wrap bot-flip-bl">
+    <img src="Recurso_8.svg" width="80" class="anim-wind anim-d3" alt="">
+  </div>
   <div class="footer-names">E & K</div>
   <p class="footer-text">Nos vemos el 18 de abril de 2026</p>
   <p class="footer-hashtag">#Edgardo&Kiara2026</p>
