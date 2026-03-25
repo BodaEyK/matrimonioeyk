@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Boda Edgardo & Kiara</title>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --gold: #b8860b;
+    --gold-light: #d4a843;
+    --gold-soft: #f0e6c8;
+    --cream: #faf8f3;
+    --cream-dark: #f0ece3;
+    --sage: #8a9a7b;
+    --sage-dark: #6b7d5e;
+    --blush: #e8c4b8;
+    --charcoal: #2c2c2c;
+    --text: #3d3d3d;
+    --text-light: #6b6b6b;
+    --white: #ffffff;
+    --danger: #c0392b;
+    --success: #27ae60;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Josefin Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* ======= HEADER ======= */
+  .admin-header {
+    background: var(--charcoal);
+    color: var(--white);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .admin-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+  }
+
+  .admin-header h1 span { color: var(--gold-light); }
+
+  .header-stats {
+    display: flex;
+    gap: 2rem;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--gold-light);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  /* ======= LAYOUT ======= */
+  .admin-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* ======= CONFIG SECTION ======= */
+  .config-section {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+  }
+
+  .config-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .url-config {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .url-config label {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    white-space: nowrap;
+  }
+
+  .url-config input {
+    flex: 1;
+    min-width: 250px;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(184,134,11,0.2);
+    border-radius: 4px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .url-config input:focus { border-color: var(--gold-light); }
+
+  .url-hint {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  /* ======= ADD GUEST ======= */
+  .add-section {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+  }
+
+  .add-form {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .form-field label {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+
+  .form-field input, .form-field textarea {
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(184,134,11,0.2);
+    border-radius: 4px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .form-field input:focus, .form-field textarea:focus {
+    border-color: var(--gold-light);
+  }
+
+  .btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+
+  .btn-primary { background: var(--gold); color: var(--white); }
+  .btn-primary:hover { background: var(--sage-dark); }
+
+  .btn-secondary { background: var(--sage); color: var(--white); }
+  .btn-secondary:hover { background: var(--sage-dark); }
+
+  .btn-danger { background: var(--danger); color: var(--white); }
+  .btn-danger:hover { background: #a93226; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+  }
+  .btn-outline:hover { background: var(--gold); color: var(--white); }
+
+  .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.6rem; }
+
+  /* ======= BULK ADD ======= */
+  .bulk-toggle {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: var(--gold);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .bulk-area {
+    display: none;
+    margin-top: 1rem;
+  }
+
+  .bulk-area.show { display: block; }
+
+  .bulk-area textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 1px solid rgba(184,134,11,0.2);
+    border-radius: 4px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.85rem;
+    resize: vertical;
+    outline: none;
+    margin-bottom: 0.8rem;
+  }
+
+  .bulk-area textarea:focus { border-color: var(--gold-light); }
+
+  /* ======= ACTIONS BAR ======= */
+  .actions-bar {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-box {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(184,134,11,0.2);
+    border-radius: 4px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+  }
+
+  .search-box:focus { border-color: var(--gold-light); }
+
+  /* ======= GUEST TABLE ======= */
+  .guest-table-wrapper {
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background: var(--charcoal);
+    color: var(--white);
+  }
+
+  th {
+    padding: 1rem;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-align: left;
+  }
+
+  td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--cream-dark);
+    font-size: 0.85rem;
+    vertical-align: middle;
+  }
+
+  tr:hover td { background: rgba(184,134,11,0.03); }
+
+  .guest-code {
+    font-family: monospace;
+    font-size: 0.85rem;
+    background: var(--cream);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .qr-cell {
+    text-align: center;
+  }
+
+  .qr-mini {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .qr-mini:hover { transform: scale(1.5); }
+
+  .qr-mini canvas, .qr-mini img { width: 50px !important; height: 50px !important; }
+
+  /* ======= QR MODAL ======= */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 5000;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 2.5rem;
+    text-align: center;
+    max-width: 380px;
+    width: 100%;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-light);
+  }
+
+  .modal-guest-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--charcoal);
+    margin-bottom: 0.3rem;
+  }
+
+  .modal-guest-code {
+    font-family: monospace;
+    color: var(--gold);
+    letter-spacing: 3px;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  #modalQR {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  #modalQR canvas, #modalQR img { border-radius: 8px; }
+
+  .modal-url {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    word-break: break-all;
+    background: var(--cream);
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ======= EMPTY STATE ======= */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-light);
+  }
+
+  .empty-state span { font-size: 3rem; display: block; margin-bottom: 1rem; }
+
+  /* ======= RESPONSIVE ======= */
+  @media (max-width: 768px) {
+    .admin-container { padding: 1rem; }
+    .add-form { flex-direction: column; }
+    .form-field { min-width: 100%; }
+    th, td { padding: 0.5rem; font-size: 0.75rem; }
+    .qr-mini { width: 35px; height: 35px; }
+    .qr-mini canvas, .qr-mini img { width: 35px !important; height: 35px !important; }
+    .header-stats { gap: 1rem; }
+  }
+
+  /* ======= ADMIN LOGIN ======= */
+  .admin-login {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--charcoal);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .admin-login.hidden { display: none; }
+
+  .admin-login h1 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold-light);
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .admin-login p {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+  }
+
+  .admin-login input {
+    padding: 0.9rem 1.5rem;
+    border: 1px solid rgba(212,168,67,0.3);
+    border-radius: 4px;
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+    outline: none;
+    width: 260px;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+  }
+
+  .admin-login input:focus { border-color: var(--gold-light); }
+
+  .admin-login button {
+    padding: 0.8rem 2.5rem;
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .admin-login button:hover { background: var(--sage-dark); }
+
+  .admin-login .login-error {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .admin-login .login-error.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ADMIN LOGIN SCREEN -->
+<div class="admin-login" id="adminLogin">
+  <h1>💍 Admin Boda E&K</h1>
+  <p>PANEL DE ADMINISTRACIÓN</p>
+  <input type="password" id="adminPassword" placeholder="Contraseña" autofocus>
+  <button onclick="adminLogin()">Ingresar</button>
+  <p class="login-error" id="loginError">Contraseña incorrecta</p>
+</div>
+
+<!-- HEADER -->
+<header class="admin-header">
+  <h1>💍 Admin <span>Boda E&K</span></h1>
+  <div class="header-stats">
+    <div>
+      <span class="stat-value" id="totalGuests">0</span>
+      Invitados
+    </div>
+    <div>
+      <span class="stat-value" id="totalConfirmed">0</span>
+      Confirmados
+    </div>
+    <div>
+      <span class="stat-value" id="totalPeople">0</span>
+      Personas total
+    </div>
+    <div>
+      <span class="stat-value" id="totalPending">0</span>
+      Pendientes
+    </div>
+  </div>
+</header>
+
+<div class="admin-container">
+
+  <!-- URL CONFIG -->
+  <div class="config-section">
+    <h2>🔗 URL de tu página de boda</h2>
+    <div class="url-config">
+      <label>URL base:</label>
+      <input type="text" id="baseUrl" placeholder="https://bodaeyk.github.io/matrimonioeyk/" value="https://bodaeyk.github.io/matrimonioeyk/">
+    </div>
+    <p class="url-hint">Esta es la URL donde hospedarás tu página. Los QR se generarán apuntando a esta dirección.</p>
+  </div>
+
+  <!-- ADD GUEST -->
+  <div class="add-section">
+    <h2>➕ Agregar Invitado</h2>
+    <div class="add-form">
+      <div class="form-field">
+        <label>Nombre completo</label>
+        <input type="text" id="guestName" placeholder="Ej: Carlos Pérez y familia">
+      </div>
+      <div class="form-field" style="max-width:120px;min-width:120px;">
+        <label>Máx. acompañantes</label>
+        <input type="number" id="maxCompanions" value="3" min="0" max="10">
+      </div>
+      <button class="btn btn-primary" onclick="addGuest()">Agregar</button>
+    </div>
+
+    <p class="bulk-toggle" onclick="toggleBulk()">📋 Agregar varios a la vez (carga masiva)</p>
+    <div class="bulk-area" id="bulkArea">
+      <textarea id="bulkNames" placeholder="Pega aquí los nombres, uno por línea:&#10;Carlos Pérez y familia&#10;Ana García&#10;Luis y Martha Rodríguez&#10;..."></textarea>
+      <button class="btn btn-secondary" onclick="bulkAdd()">Agregar todos</button>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions-bar">
+    <input type="text" class="search-box" id="searchBox" placeholder="🔍 Buscar invitado..." oninput="renderTable()">
+    <button class="btn btn-outline" onclick="viewRSVPs()">📋 Ver confirmaciones</button>
+    <button class="btn btn-outline" onclick="loadGuests();loadStats();">🔄 Refrescar</button>
+    <button class="btn btn-outline" onclick="downloadAllQR()">📥 Descargar todos los QR</button>
+    <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑 Borrar todo</button>
+  </div>
+
+  <!-- GUEST TABLE -->
+  <div class="guest-table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Código</th>
+          <th>Estado</th>
+          <th>QR</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="guestTableBody">
+      </tbody>
+    </table>
+    <div class="empty-state" id="emptyState">
+      <span>📝</span>
+      Aún no hay invitados. ¡Agrega el primero arriba!
+    </div>
+  </div>
+
+  <!-- RSVP RESPONSES -->
+  <div class="guest-table-wrapper" id="rsvpSection" style="display:none; margin-top:2rem;"></div>
+
+</div>
+
+<!-- QR MODAL -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h3 class="modal-guest-name" id="modalName"></h3>
+    <p class="modal-guest-code" id="modalCode"></p>
+    <div id="modalQR"></div>
+    <p class="modal-url" id="modalUrl"></p>
+    <div class="modal-actions">
+      <button class="btn btn-primary btn-sm" onclick="downloadQR()">📥 Descargar QR</button>
+      <button class="btn btn-secondary btn-sm" onclick="shareWhatsApp()">💬 Enviar por WhatsApp</button>
+      <button class="btn btn-outline btn-sm" onclick="copyLink()">🔗 Copiar link</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ADMIN_PASSWORD = 'EyK2026';
+
+  function adminLogin() {
+    const input = document.getElementById('adminPassword').value;
+    const error = document.getElementById('loginError');
+    if (input === ADMIN_PASSWORD) {
+      document.getElementById('adminLogin').classList.add('hidden');
+      sessionStorage.setItem('admin_logged', 'true');
+    } else {
+      error.classList.add('show');
+      setTimeout(() => error.classList.remove('show'), 2000);
+    }
+  }
+
+  document.getElementById('adminPassword').addEventListener('keypress', e => {
+    if (e.key === 'Enter') adminLogin();
+  });
+
+  if (sessionStorage.getItem('admin_logged') === 'true') {
+    document.getElementById('adminLogin').classList.add('hidden');
+  }
+
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzAXGmfqR6WJhtVToBuUr_ec52bwmSy0F6BilSup4X2xfWXDcUqKzIYD2uk6TGssi0/exec';
+  const ADMIN_KEY = 'EdgardoKiara2026Admin';
+
+  let guests = [];
+  let currentModalGuest = null;
+  let isLoading = false;
+
+  async function apiGet(params) {
+    const query = new URLSearchParams({ ...params, adminKey: ADMIN_KEY }).toString();
+    const res = await fetch(`${API_URL}?${query}`);
+    return res.json();
+  }
+
+  async function apiPost(data) {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ ...data, adminKey: ADMIN_KEY })
+    });
+    return res.json();
+  }
+
+  function showLoading(msg) {
+    isLoading = true;
+    document.getElementById('emptyState').innerHTML = `<span>⏳</span>${msg || 'Cargando...'}`;
+    document.getElementById('emptyState').style.display = 'block';
+  }
+
+  async function loadGuests() {
+    showLoading('Cargando invitados...');
+    try {
+      const data = await apiGet({ action: 'getGuests' });
+      isLoading = false;
+      if (data.success) {
+        guests = data.guests;
+        renderTable();
+      } else {
+        alert('Error cargando invitados: ' + data.error);
+      }
+    } catch (err) {
+      isLoading = false;
+      alert('Error de conexión. Verifica la URL del API.');
+    }
+  }
+
+  async function loadStats() {
+    try {
+      const data = await apiGet({ action: 'getStats' });
+      if (data.success) {
+        document.getElementById('totalGuests').textContent = data.stats.totalInvitados;
+        document.getElementById('totalConfirmed').textContent = data.stats.confirmados;
+        document.getElementById('totalPeople').textContent = data.stats.totalPersonas;
+        document.getElementById('totalPending').textContent = data.stats.pendientes;
+      }
+    } catch (err) { /* silent */ }
+  }
+
+  async function addGuest() {
+    const nameInput = document.getElementById('guestName');
+    const maxInput = document.getElementById('maxCompanions');
+    const name = nameInput.value.trim();
+    if (!name) return;
+
+    const btn = document.querySelector('.add-form .btn-primary');
+    btn.textContent = 'Agregando...';
+    btn.disabled = true;
+
+    try {
+      const data = await apiPost({ action: 'addGuest', name, maxCompanions: parseInt(maxInput.value) >= 0 ? parseInt(maxInput.value) : 3 });
+      if (data.success) {
+        guests.push(data.guest);
+        renderTable();
+        loadStats();
+        nameInput.value = '';
+        nameInput.focus();
+      } else {
+        alert('Error: ' + data.error);
+      }
+    } catch (err) {
+      alert('Error de conexión.');
+    } finally {
+      btn.textContent = 'Agregar';
+      btn.disabled = false;
+    }
+  }
+
+  async function bulkAdd() {
+    const text = document.getElementById('bulkNames').value;
+    const names = text.split('\n').map(n => n.trim()).filter(n => n.length > 0);
+    if (names.length === 0) return;
+
+    const maxComp = parseInt(document.getElementById('maxCompanions').value) >= 0 ? parseInt(document.getElementById('maxCompanions').value) : 3;
+    const btn = document.querySelector('.bulk-area .btn-secondary');
+    btn.textContent = `Agregando ${names.length}...`;
+    btn.disabled = true;
+
+    try {
+      const data = await apiPost({ action: 'addGuestsBulk', names, maxCompanions: maxComp });
+      if (data.success) {
+        alert(`✅ Se agregaron ${data.added} invitados.${data.duplicates > 0 ? ` (${data.duplicates} duplicados omitidos)` : ''}`);
+        document.getElementById('bulkNames').value = '';
+        await loadGuests();
+        loadStats();
+      } else {
+        alert('Error: ' + data.error);
+      }
+    } catch (err) {
+      alert('Error de conexión.');
+    } finally {
+      btn.textContent = 'Agregar todos';
+      btn.disabled = false;
+    }
+  }
+
+  async function removeGuest(code) {
+    if (!confirm('¿Eliminar este invitado?')) return;
+    try {
+      const data = await apiPost({ action: 'removeGuest', code });
+      if (data.success) {
+        guests = guests.filter(g => g.code !== code);
+        renderTable();
+        loadStats();
+      } else {
+        alert('Error: ' + data.error);
+      }
+    } catch (err) {
+      alert('Error de conexión.');
+    }
+  }
+
+  async function clearAll() {
+    if (!confirm('⚠️ ¿Eliminar TODOS los invitados? No se puede deshacer.')) return;
+    if (!confirm('🔴 ¿SEGURO? Esto borrará también todas las confirmaciones.')) return;
+    try {
+      const data = await apiPost({ action: 'clearAll' });
+      if (data.success) {
+        guests = [];
+        renderTable();
+        loadStats();
+      }
+    } catch (err) {
+      alert('Error de conexión.');
+    }
+  }
+
+  function toggleBulk() { document.getElementById('bulkArea').classList.toggle('show'); }
+
+  function renderTable() {
+    const tbody = document.getElementById('guestTableBody');
+    const empty = document.getElementById('emptyState');
+    const search = document.getElementById('searchBox').value.toLowerCase();
+
+    const filtered = guests.filter(g =>
+      g.name.toLowerCase().includes(search) || g.code.toLowerCase().includes(search)
+    );
+
+    if (filtered.length === 0 && !isLoading) {
+      tbody.innerHTML = '';
+      empty.innerHTML = '<span>📝</span>Aún no hay invitados. ¡Agrega el primero arriba!';
+      empty.style.display = 'block';
+      return;
+    }
+
+    if (isLoading) return;
+    empty.style.display = 'none';
+
+    tbody.innerHTML = filtered.map((g, i) => `
+      <tr>
+        <td style="color:var(--text-light); font-size:0.75rem;">${i + 1}</td>
+        <td><strong style="font-weight:400;">${g.name}</strong></td>
+        <td><span class="guest-code">${g.code}</span></td>
+        <td style="font-size:0.75rem; color:${g.status === 'Confirmado' ? 'var(--success)' : g.status === 'No asistirá' ? 'var(--danger)' : 'var(--text-light)'};">
+          ${g.status || 'Pendiente'}
+        </td>
+        <td class="qr-cell">
+          <div class="qr-mini" id="qr-${g.code}" onclick="showQRModal('${g.code}')" title="Click para ampliar"></div>
+        </td>
+        <td>
+          <button class="btn btn-outline btn-sm" onclick="showQRModal('${g.code}')" style="margin-right:0.3rem;">📱</button>
+          <button class="btn btn-danger btn-sm" onclick="removeGuest('${g.code}')">✕</button>
+        </td>
+      </tr>
+    `).join('');
+
+    setTimeout(() => {
+      filtered.forEach(g => {
+        const el = document.getElementById(`qr-${g.code}`);
+        if (el && !el.hasChildNodes()) {
+          new QRCode(el, { text: buildGuestUrl(g.code), width: 50, height: 50, colorDark: '#2c2c2c', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+        }
+      });
+    }, 100);
+  }
+
+  function buildGuestUrl(code) {
+    const base = document.getElementById('baseUrl').value.trim();
+    if (base) {
+      const sep = base.includes('?') ? '&' : '?';
+      return `${base}${sep}c=${code}`;
+    }
+    return `https://bodaeyk.github.io/matrimonioeyk/?c=${code}`;
+  }
+
+  function showQRModal(code) {
+    const guest = guests.find(g => g.code === code);
+    if (!guest) return;
+    currentModalGuest = guest;
+    const url = buildGuestUrl(code);
+
+    document.getElementById('modalName').textContent = guest.name;
+    document.getElementById('modalCode').textContent = `Código: ${code}`;
+    document.getElementById('modalUrl').textContent = url;
+
+    const qrC = document.getElementById('modalQR');
+    qrC.innerHTML = '';
+    new QRCode(qrC, { text: url, width: 220, height: 220, colorDark: '#2c2c2c', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+
+    document.getElementById('qrModal').classList.add('show');
+  }
+
+  function closeModal() {
+    document.getElementById('qrModal').classList.remove('show');
+    currentModalGuest = null;
+  }
+
+  document.getElementById('qrModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('qrModal')) closeModal();
+  });
+
+  function downloadQR() {
+    if (!currentModalGuest) return;
+    const canvas = document.querySelector('#modalQR canvas');
+    if (!canvas) return;
+    const link = document.createElement('a');
+    link.download = `QR-${currentModalGuest.name.replace(/\s+/g, '_')}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  function shareWhatsApp() {
+    if (!currentModalGuest) return;
+    const url = buildGuestUrl(currentModalGuest.code);
+    const msg = encodeURIComponent(
+      `💍 ¡Estás invitado(a) a la boda de Edgardo & Kiara! ✨\n\n` +
+      `Hola ${currentModalGuest.name}, nos encantaría contar con tu presencia en nuestro día especial.\n\n` +
+      `📱 Ingresa con tu invitación exclusiva aquí:\n${url}\n\n` +
+      `Tu código personal: ${currentModalGuest.code}\n\n` +
+      `¡Te esperamos! 🥂`
+    );
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
+  }
+
+  function copyLink() {
+    if (!currentModalGuest) return;
+    navigator.clipboard.writeText(buildGuestUrl(currentModalGuest.code)).then(() => alert('✅ Link copiado'));
+  }
+
+  async function downloadAllQR() {
+    if (guests.length === 0) return alert('No hay invitados.');
+    alert(`Se descargarán ${guests.length} QR. Puede tomar un momento...`);
+    for (const guest of guests) {
+      const c = document.createElement('div');
+      c.style.cssText = 'position:fixed;left:-9999px';
+      document.body.appendChild(c);
+      new QRCode(c, { text: buildGuestUrl(guest.code), width: 300, height: 300, colorDark: '#2c2c2c', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+      await new Promise(r => setTimeout(r, 250));
+      const canvas = c.querySelector('canvas');
+      if (canvas) {
+        const a = document.createElement('a');
+        a.download = `QR-${guest.code}-${guest.name.replace(/\s+/g, '_')}.png`;
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+      }
+      document.body.removeChild(c);
+      await new Promise(r => setTimeout(r, 100));
+    }
+  }
+
+  // ======= VIEW RSVPs =======
+  async function viewRSVPs() {
+    const section = document.getElementById('rsvpSection');
+    section.style.display = 'block';
+    section.innerHTML = '<p style="text-align:center;padding:2rem;">⏳ Cargando confirmaciones...</p>';
+    section.scrollIntoView({ behavior: 'smooth' });
+
+    try {
+      const data = await apiGet({ action: 'getRSVPs' });
+      if (data.success && data.rsvps.length > 0) {
+        section.innerHTML = `
+          <h2 style="font-family:Cormorant Garamond,serif;font-size:1.3rem;padding:1.5rem 1rem 0.5rem;">📋 Confirmaciones RSVP (${data.rsvps.length})</h2>
+          <div style="overflow-x:auto;">
+          <table>
+            <thead><tr>
+              <th>Nombre</th>
+              <th>¿Asiste?</th>
+              <th>Acomp.</th>
+              <th>Nombres Acompañantes</th>
+              <th>Música</th>
+              <th>Mensaje</th>
+              <th>Fecha</th>
+            </tr></thead>
+            <tbody>${data.rsvps.map(r => `
+              <tr>
+                <td><strong style="font-weight:400">${r.name}</strong></td>
+                <td style="color:${r.attending === 'si' ? 'var(--success)' : 'var(--danger)'}">${r.attending === 'si' ? '✅ Sí' : '❌ No'}</td>
+                <td style="text-align:center">${r.companions || 0}</td>
+                <td style="font-size:0.8rem">${r.companionNames || '-'}</td>
+                <td style="font-size:0.8rem">🎵 ${r.music || '-'}</td>
+                <td style="font-size:0.8rem;max-width:180px">${r.message || '-'}</td>
+                <td style="font-size:0.75rem;color:var(--text-light)">${r.confirmedAt || '-'}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+          </div>`;
+      } else if (data.success) {
+        section.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--text-light);">Aún no hay confirmaciones.</p>';
+      }
+    } catch (err) {
+      section.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--danger);">Error al cargar.</p>';
+    }
+  }
+
+  // ======= EVENTS =======
+  document.getElementById('guestName').addEventListener('keypress', e => { if (e.key === 'Enter') addGuest(); });
+  document.getElementById('baseUrl').addEventListener('change', () => {
+    localStorage.setItem('wedding_base_url', document.getElementById('baseUrl').value);
+    renderTable();
+  });
+
+  // ======= INIT =======
+  document.getElementById('baseUrl').value = localStorage.getItem('wedding_base_url') || 'https://bodaeyk.github.io/matrimonioeyk/';
+  loadGuests();
+  loadStats();
+</script>
+
+</body>
+</html>
