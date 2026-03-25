@@ -36,6 +36,11 @@ function jsonResponse(data) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+// Normaliza un código: elimina espacios y convierte a mayúsculas
+function normalizeCode(code) {
+  return code.toString().trim().toUpperCase();
+}
+
 // === MAIN HANDLERS ===
 
 // Maneja peticiones GET (validar código, obtener invitados, obtener RSVPs)
@@ -61,6 +66,7 @@ function doGet(e) {
         return jsonResponse({ success: false, error: 'Acción no válida' });
     }
   } catch (err) {
+    Logger.log('Error en doGet: ' + err.message);
     return jsonResponse({ success: false, error: err.message });
   }
 }
@@ -71,6 +77,7 @@ function doPost(e) {
   try {
     data = JSON.parse(e.postData.contents);
   } catch (err) {
+    Logger.log('Error parseando datos POST: ' + err.message);
     return jsonResponse({ success: false, error: 'Datos inválidos' });
   }
 
@@ -96,6 +103,7 @@ function doPost(e) {
         return jsonResponse({ success: false, error: 'Acción no válida' });
     }
   } catch (err) {
+    Logger.log('Error en doPost (action=' + data.action + '): ' + err.message);
     return jsonResponse({ success: false, error: err.message });
   }
 }
@@ -109,19 +117,19 @@ function doPost(e) {
 function validateCode(code) {
   if (!code) return jsonResponse({ success: false, error: 'Código requerido' });
 
-  code = code.toString().trim().toUpperCase();
+  const normalizedCode = normalizeCode(code);
   const sheet = getSheet(SHEET_INVITADOS);
   const data = sheet.getDataRange().getValues();
 
-  for (let i = 1; i < data.length; i++) { // Skip header row
-    if (data[i][0].toString().trim().toUpperCase() === code) {
-      // Check if already confirmed RSVP
+  for (let i = 1; i < data.length; i++) {
+    if (normalizeCode(data[i][0]) === normalizedCode) {
+      // Verificar si ya confirmó RSVP
       const rsvpSheet = getSheet(SHEET_RSVP);
       const rsvpData = rsvpSheet.getDataRange().getValues();
       let alreadyConfirmed = false;
 
       for (let j = 1; j < rsvpData.length; j++) {
-        if (rsvpData[j][0].toString().trim().toUpperCase() === code) {
+        if (normalizeCode(rsvpData[j][0]) === normalizedCode) {
           alreadyConfirmed = true;
           break;
         }
@@ -150,13 +158,14 @@ function submitRSVP(data) {
     return jsonResponse({ success: false, error: 'Datos incompletos' });
   }
 
-  // Validate code exists
+  // Validar que el código existe
   const invSheet = getSheet(SHEET_INVITADOS);
   const invData = invSheet.getDataRange().getValues();
   let validGuest = null;
+  const normalizedCode = normalizeCode(code);
 
   for (let i = 1; i < invData.length; i++) {
-    if (invData[i][0].toString().trim().toUpperCase() === code.toString().trim().toUpperCase()) {
+    if (normalizeCode(invData[i][0]) === normalizedCode) {
       validGuest = { row: i + 1, name: invData[i][1], maxCompanions: invData[i][2] || 3 };
       break;
     }
@@ -166,7 +175,7 @@ function submitRSVP(data) {
     return jsonResponse({ success: false, error: 'Código inválido' });
   }
 
-  // Validate max companions
+  // Validar máximo de acompañantes
   const numCompanions = parseInt(companions) || 0;
   if (numCompanions > validGuest.maxCompanions) {
     return jsonResponse({
@@ -175,42 +184,37 @@ function submitRSVP(data) {
     });
   }
 
-  // Check for duplicate RSVP and update if exists
+  const timestamp = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
   const rsvpSheet = getSheet(SHEET_RSVP);
   const rsvpData = rsvpSheet.getDataRange().getValues();
 
+  // Actualizar RSVP si ya existe
   for (let j = 1; j < rsvpData.length; j++) {
-    if (rsvpData[j][0].toString().trim().toUpperCase() === code.toString().trim().toUpperCase()) {
-      // Update existing RSVP
+    if (normalizeCode(rsvpData[j][0]) === normalizedCode) {
       rsvpSheet.getRange(j + 1, 1, 1, 7).setValues([[
-        code.toUpperCase(),
+        normalizedCode,
         name,
         attending,
         numCompanions,
         restriction || 'Ninguna',
         message || '',
-        new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' })
+        timestamp
       ]]);
-
-      // Update status in Invitados
       invSheet.getRange(validGuest.row, 4).setValue(attending === 'si' ? 'Confirmado' : 'No asistirá');
-
       return jsonResponse({ success: true, message: 'RSVP actualizado correctamente', updated: true });
     }
   }
 
-  // New RSVP
+  // Nuevo RSVP
   rsvpSheet.appendRow([
-    code.toUpperCase(),
+    normalizedCode,
     name,
     attending,
     numCompanions,
     restriction || 'Ninguna',
     message || '',
-    new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' })
+    timestamp
   ]);
-
-  // Update status in Invitados
   invSheet.getRange(validGuest.row, 4).setValue(attending === 'si' ? 'Confirmado' : 'No asistirá');
 
   return jsonResponse({ success: true, message: '¡RSVP registrado exitosamente!' });
@@ -329,7 +333,7 @@ function addGuest(data) {
   return jsonResponse({ success: true, guest: { code, name: name.trim(), maxCompanions: maxCompanions || 3 } });
 }
 
-// Agregar invitados masivamente
+// Agregar invitados masivamente — escritura en batch para mayor velocidad
 function addGuestsBulk(data) {
   verifyAdmin(data.adminKey);
 
@@ -343,6 +347,7 @@ function addGuestsBulk(data) {
   const added = [];
   const duplicates = [];
   const now = new Date().toLocaleString('es-PE', { timeZone: 'America/Lima' });
+  const rowsToAdd = [];
 
   names.forEach(name => {
     name = name.trim();
@@ -354,10 +359,16 @@ function addGuestsBulk(data) {
     }
 
     const code = generateUniqueCode();
-    sheet.appendRow([code, name, maxCompanions || 3, 'Pendiente', now]);
+    rowsToAdd.push([code, name, maxCompanions || 3, 'Pendiente', now]);
     added.push({ code, name });
     existing.push(name.toLowerCase());
   });
+
+  // Escritura en batch: una sola operación en lugar de N appendRow()
+  if (rowsToAdd.length > 0) {
+    const lastRow = sheet.getLastRow();
+    sheet.getRange(lastRow + 1, 1, rowsToAdd.length, 5).setValues(rowsToAdd);
+  }
 
   return jsonResponse({
     success: true,
@@ -374,18 +385,19 @@ function removeGuest(data) {
   const { code } = data;
   if (!code) return jsonResponse({ success: false, error: 'Código requerido' });
 
+  const normalizedCode = normalizeCode(code);
   const sheet = getSheet(SHEET_INVITADOS);
   const values = sheet.getDataRange().getValues();
 
   for (let i = 1; i < values.length; i++) {
-    if (values[i][0].toString().trim().toUpperCase() === code.toString().trim().toUpperCase()) {
+    if (normalizeCode(values[i][0]) === normalizedCode) {
       sheet.deleteRow(i + 1);
 
-      // Also remove RSVP if exists
+      // Eliminar RSVP asociado si existe
       const rsvpSheet = getSheet(SHEET_RSVP);
       const rsvpValues = rsvpSheet.getDataRange().getValues();
       for (let j = 1; j < rsvpValues.length; j++) {
-        if (rsvpValues[j][0].toString().trim().toUpperCase() === code.toString().trim().toUpperCase()) {
+        if (normalizeCode(rsvpValues[j][0]) === normalizedCode) {
           rsvpSheet.deleteRow(j + 1);
           break;
         }
@@ -405,7 +417,7 @@ function clearAllGuests(data) {
   const invSheet = getSheet(SHEET_INVITADOS);
   const rsvpSheet = getSheet(SHEET_RSVP);
 
-  // Keep headers, delete rest
+  // Conservar encabezados, eliminar el resto
   if (invSheet.getLastRow() > 1) {
     invSheet.deleteRows(2, invSheet.getLastRow() - 1);
   }
@@ -471,7 +483,7 @@ function testSetup() {
     rsvpSheet.setColumnWidth(7, 160);
   }
 
-  // Add test guest
+  // Agregar invitado de prueba
   invSheet.appendRow(['DEMO01', 'Invitado de Prueba', 3, 'Pendiente', new Date().toLocaleString('es-PE')]);
 
   Logger.log('✅ Setup completado. Hojas creadas con invitado de prueba.');
