@@ -1863,12 +1863,18 @@
     }
   }
 
-  // ---- AUTO LOGIN ----
-  (async () => {
-    const urlCode   = getUrlParam('c');
-    const savedCode = sessionStorage.getItem('wedding_code');
-    if (urlCode)    await validateCode(urlCode);
-    else if (savedCode) await validateCode(savedCode);
+  // ---- PRE-FILL FROM URL ----
+  // Si hay un código en la URL (?c=CODIGO), se pre-llena el campo
+  // pero el invitado igual debe presionar "Entrar" para verificarlo.
+  (() => {
+    const urlCode = getUrlParam('c');
+    if (urlCode) {
+      const input = document.getElementById('codeInput');
+      if (input) {
+        input.value = urlCode.trim().toUpperCase();
+        input.focus();
+      }
+    }
   })();
 
   document.getElementById('codeInput').addEventListener('keypress', e => {
