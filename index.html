@@ -701,6 +701,7 @@
     width: min(560px, 92vw);
     aspect-ratio: 1 / 1;
     margin: 0 auto;
+    container-type: inline-size;
   }
 
   .botanical-piece {
@@ -741,7 +742,7 @@
 
   .countdown-content {
     position: absolute;
-    inset: 15% 12%;
+    inset: 18% 15%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -749,11 +750,16 @@
     z-index: 2;
   }
 
+  .countdown-content .section-title {
+    font-size: 7cqw;
+    margin-bottom: 0;
+  }
+
   .countdown-grid {
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
-    margin-top: 1rem;
+    gap: 3cqw;
+    margin-top: 2cqw;
     flex-wrap: nowrap;
   }
 
@@ -761,20 +767,19 @@
 
   .countdown-number {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    font-size: 9cqw;
     font-weight: 300;
     color: var(--gold);
     line-height: 1;
     display: block;
-    min-width: 50px;
   }
 
   .countdown-label {
-    font-size: 0.6rem;
-    letter-spacing: 3px;
+    font-size: 2cqw;
+    letter-spacing: 0.5cqw;
     text-transform: uppercase;
     color: var(--text-light);
-    margin-top: 0.5rem;
+    margin-top: 1cqw;
   }
 
   /* ======= SECTION STYLES ======= */
@@ -1350,9 +1355,7 @@
     nav { gap: 1.2rem; flex-wrap: wrap; padding: 1rem; }
     nav a { font-size: 0.6rem; letter-spacing: 2px; }
 
-    .countdown-grid { gap: 0.8rem; }
-    .countdown-number { font-size: 2rem; min-width: 42px; }
-    .countdown-frame { width: min(380px, 92vw); }
+    .countdown-frame { width: min(420px, 92vw); }
 
     .timeline::before { left: 20px; }
     .timeline-dot { left: 20px; }
@@ -1497,7 +1500,7 @@
       <img src="Recurso_17.svg" alt="">
     </div>
     <div class="countdown-content">
-      <p class="section-title" style="margin-bottom:0;font-size:clamp(1.8rem,5vw,2.5rem);">Faltan</p>
+      <p class="section-title">Faltan</p>
       <div class="countdown-grid">
         <div class="countdown-item">
           <span class="countdown-number" id="days">000</span>
