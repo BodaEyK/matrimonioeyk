@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 960.07 953.61">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: url(#linear-gradient-2);
+        stroke-width: 2px;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        opacity: .8;
+        stroke: url(#linear-gradient);
+        stroke-width: 8px;
+      }
+
+      .cls-3 {
+        stroke: url(#linear-gradient-3);
+        stroke-width: 4px;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="0" y1="470.51" x2="919.46" y2="470.51" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a86b1d"/>
+      <stop offset=".11" stop-color="#c39541"/>
+      <stop offset=".22" stop-color="#dab85f"/>
+      <stop offset=".33" stop-color="#ead175"/>
+      <stop offset=".42" stop-color="#f4e082"/>
+      <stop offset=".5" stop-color="#f8e687"/>
+      <stop offset=".62" stop-color="#f6e180"/>
+      <stop offset=".77" stop-color="#f1d36f"/>
+      <stop offset=".95" stop-color="#e8bc53"/>
+      <stop offset="1" stop-color="#e6b54a"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="26.56" y1="463.62" x2="953.8" y2="463.62" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="30.82" y1="488.99" x2="960.07" y2="488.99" xlink:href="#linear-gradient"/>
+  </defs>
+  <g id="kotak_link">
+    <circle class="cls-2" cx="459.73" cy="470.51" r="455.73"/>
+    <circle class="cls-1" cx="490.18" cy="463.62" r="462.62"/>
+    <circle class="cls-3" cx="495.45" cy="488.99" r="462.62"/>
+  </g>
+</svg>
