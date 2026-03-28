@@ -741,7 +741,7 @@
 
   .countdown-content {
     position: absolute;
-    inset: 0;
+    inset: 15% 12%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -752,26 +752,26 @@
   .countdown-grid {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin-top: 1.2rem;
-    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.8rem;
+    flex-wrap: nowrap;
   }
 
   .countdown-item { text-align: center; }
 
   .countdown-number {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
+    font-size: clamp(2rem, 6vw, 2.8rem);
     font-weight: 300;
     color: var(--gold);
     line-height: 1;
     display: block;
-    min-width: 60px;
+    min-width: 45px;
   }
 
   .countdown-label {
-    font-size: 0.6rem;
-    letter-spacing: 4px;
+    font-size: 0.55rem;
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--text-light);
     margin-top: 0.5rem;
@@ -1350,9 +1350,9 @@
     nav { gap: 1.2rem; flex-wrap: wrap; padding: 1rem; }
     nav a { font-size: 0.6rem; letter-spacing: 2px; }
 
-    .countdown-grid { gap: 1.2rem; }
-    .countdown-number { font-size: 2.2rem; min-width: 48px; }
-    .countdown-frame { width: min(340px, 90vw); }
+    .countdown-grid { gap: 0.6rem; }
+    .countdown-number { font-size: 1.8rem; min-width: 38px; }
+    .countdown-frame { width: min(320px, 88vw); }
 
     .timeline::before { left: 20px; }
     .timeline-dot { left: 20px; }
@@ -1497,7 +1497,7 @@
       <img src="Recurso_17.svg" alt="">
     </div>
     <div class="countdown-content">
-      <p class="section-title" style="margin-bottom:0;">Faltan</p>
+      <p class="section-title" style="margin-bottom:0;font-size:clamp(1.5rem,4vw,2rem);">Faltan</p>
       <div class="countdown-grid">
         <div class="countdown-item">
           <span class="countdown-number" id="days">000</span>
@@ -1505,15 +1505,15 @@
         </div>
         <div class="countdown-item">
           <span class="countdown-number" id="hours">00</span>
-          <p class="countdown-label">Horas</p>
+          <p class="countdown-label">Hrs</p>
         </div>
         <div class="countdown-item">
           <span class="countdown-number" id="minutes">00</span>
-          <p class="countdown-label">Minutos</p>
+          <p class="countdown-label">Min</p>
         </div>
         <div class="countdown-item">
           <span class="countdown-number" id="seconds">00</span>
-          <p class="countdown-label">Segundos</p>
+          <p class="countdown-label">Seg</p>
         </div>
       </div>
     </div>
