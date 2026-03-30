@@ -1066,41 +1066,26 @@
     overflow: hidden;
   }
 
-  .dresscode-palette {
+  .dresscode-icon {
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
-    margin-top: 2rem;
-    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
   }
 
-  .color-swatch {
-    width: 60px; height: 60px;
-    border-radius: 50%;
-    border: 3px solid var(--white);
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-    cursor: default;
-    transition: transform 0.3s ease;
-  }
-
-  .color-swatch:hover { transform: scale(1.15); }
-
-  .color-swatch-label {
-    font-size: 0.6rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-light);
-    margin-top: 0.8rem;
-    text-align: center;
+  .dresscode-icon img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
   }
 
   .dresscode-text {
     max-width: 500px;
-    margin: 2rem auto 0;
+    margin: 0 auto;
     font-style: italic;
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
     color: var(--text-light);
+    line-height: 1.9;
   }
 
   /* ======= RSVP ======= */
@@ -1316,6 +1301,18 @@
     overflow: hidden;
   }
 
+  .gifts-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+  }
+
+  .gifts-icon img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+  }
+
   .gifts-message {
     max-width: 550px;
     margin: 0 auto 2rem;
@@ -1324,6 +1321,14 @@
     color: var(--text-light);
     line-height: 1.9;
     font-style: italic;
+  }
+
+  .gifts-subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 2.5rem 0 1rem;
   }
 
   .gift-accounts {
@@ -1356,6 +1361,46 @@
     font-size: 1.2rem;
     color: var(--charcoal);
     letter-spacing: 2px;
+  }
+
+  .gift-addresses {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .gift-address-card {
+    padding: 2rem 2rem;
+    background: var(--cream);
+    border-radius: 4px;
+    min-width: 220px;
+    max-width: 280px;
+    transition: transform 0.3s ease;
+  }
+
+  .gift-address-card:hover { transform: translateY(-3px); }
+
+  .gift-address-label {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .gift-address-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+  }
+
+  .gift-address-detail {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 1rem;
   }
 
   /* ======= FOOTER ======= */
@@ -1695,14 +1740,8 @@
 <section class="dresscode">
   <h2 class="section-title">Código de Vestimenta</h2>
   <div class="section-ornament"><span>elegante</span></div>
-  <p class="dresscode-text">"Formal / Cocktail — Los colores sugeridos son tonos cálidos y naturales"</p>
-  <div class="dresscode-palette">
-    <div><div class="color-swatch" style="background:#8a9a7b;"></div><p class="color-swatch-label">Sage</p></div>
-    <div><div class="color-swatch" style="background:#d4a843;"></div><p class="color-swatch-label">Dorado</p></div>
-    <div><div class="color-swatch" style="background:#e8c4b8;"></div><p class="color-swatch-label">Blush</p></div>
-    <div><div class="color-swatch" style="background:#2c2c2c;"></div><p class="color-swatch-label">Negro</p></div>
-    <div><div class="color-swatch" style="background:#f0ece3;"></div><p class="color-swatch-label">Crema</p></div>
-  </div>
+  <div class="dresscode-icon"><img src="dress_code.svg" alt=""></div>
+  <p class="dresscode-text">"Formal / Cocktail — Los colores sugeridos son tonos cálidos y naturales. Recuerda que el blanco es exclusivo para la novia."</p>
 </section>
 
 <!-- RSVP -->
@@ -1754,9 +1793,12 @@
 <section class="gifts" id="regalos">
   <h2 class="section-title">Mesa de Regalos</h2>
   <div class="section-ornament"><span>con cariño</span></div>
+  <div class="gifts-icon"><img src="regalos.svg" alt=""></div>
   <p class="gifts-message">
-    "Tu presencia es nuestro mejor regalo. Pero si deseas tener un detalle especial con nosotros, aquí te dejamos nuestros datos."
+    "Tu presencia es nuestro mejor regalo. Pero si deseas tener un detalle especial con nosotros, aquí te dejamos las siguientes opciones:"
   </p>
+
+  <p class="gifts-subtitle">Transferencia / Yape</p>
   <div class="gift-accounts">
     <div class="gift-card">
       <p class="gift-bank">Banco Interbank</p>
@@ -1768,6 +1810,22 @@
       <p class="gift-bank">Yape / Plin</p>
       <p class="gift-number">949 837 702</p>
       <p class="gift-number">Edgardo Cruz Ramírez</p>
+    </div>
+  </div>
+
+  <p class="gifts-subtitle">Entregas personales</p>
+  <div class="gift-addresses">
+    <div class="gift-address-card">
+      <p class="gift-address-label">Casa del novio</p>
+      <p class="gift-address-name">ASV. Pedro Miguel Silva Arévalo</p>
+      <p class="gift-address-detail">Mz. A lote 19, Frente a AA.HH Villa Primavera, carretera Sullana-Paita.</p>
+      <a href="https://maps.app.goo.gl/wK8MS8T8guwzLLPQA" target="_blank" style="display:inline-block;padding:0.5rem 1.2rem;background:var(--gold);color:var(--white);text-decoration:none;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;border-radius:3px;">📍 Ver en mapa</a>
+    </div>
+    <div class="gift-address-card">
+      <p class="gift-address-label">Casa de la novia</p>
+      <p class="gift-address-name">Av. Santa Rosa N° 141</p>
+      <p class="gift-address-detail">Antes de Plazuela Checa, Sullana.</p>
+      <a href="https://maps.app.goo.gl/7R1XdZ6XUTL9Bap2A" target="_blank" style="display:inline-block;padding:0.5rem 1.2rem;background:var(--gold);color:var(--white);text-decoration:none;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;border-radius:3px;">📍 Ver en mapa</a>
     </div>
   </div>
 </section>
