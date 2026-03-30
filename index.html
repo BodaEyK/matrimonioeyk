@@ -1197,6 +1197,37 @@
     padding: 2rem;
   }
 
+  .rsvp-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+  }
+
+  .rsvp-icon img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+  }
+
+  .guest-invitation-msg {
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+    padding: 1rem 1.2rem;
+    background: rgba(184,134,11,0.06);
+    border-left: 3px solid var(--gold-light);
+    border-radius: 0 4px 4px 0;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    line-height: 1.8;
+    text-align: left;
+  }
+
+  .guest-invitation-msg strong {
+    color: var(--text);
+    font-weight: 400;
+  }
+
   /* ======= COMPANION PILLS ======= */
   .companion-pills-label {
     font-size: 0.7rem;
@@ -1680,6 +1711,9 @@
   <h2 class="section-title">Confirma tu Asistencia</h2>
   <div class="section-ornament"><span>RSVP</span></div>
 
+  <div class="rsvp-icon"><img src="Asistir.svg" alt=""></div>
+  <div class="guest-invitation-msg" id="guestMsg" style="display:none;"></div>
+
   <form class="rsvp-form" id="rsvpForm">
     <div class="form-group">
       <input type="text" placeholder="Tu nombre completo" required>
@@ -1888,9 +1922,13 @@
     const pillsContainer = document.getElementById('companionPills');
     const hiddenInput   = document.getElementById('companionSelect');
 
+    const msgEl = document.getElementById('guestMsg');
+    const firstName = guest.name.split(' ')[0];
+
     if (max === 0) {
       pillsGroup.style.display = 'none';
       hiddenInput.value = '0';
+      msgEl.innerHTML = 'Hola, <strong>' + firstName + '</strong>. Recuerda que tu invitación es personal e individual. Regístrate a continuación.';
     } else {
       pillsGroup.style.display = 'block';
       pillsContainer.innerHTML = '';
@@ -1904,7 +1942,14 @@
         pillsContainer.appendChild(pill);
       }
       hiddenInput.value = '0';
+
+      if (max === 1) {
+        msgEl.innerHTML = 'Hola, <strong>' + firstName + '</strong>. Recuerda que tu invitación te incluye a ti y a <strong>1 persona más</strong>. Regístrala a continuación.';
+      } else {
+        msgEl.innerHTML = 'Hola, <strong>' + firstName + '</strong>. Recuerda que tu invitación te incluye a ti y a <strong>' + max + ' personas más</strong>. Regístralas a continuación.';
+      }
     }
+    msgEl.style.display = 'block';
 
     if (guest.alreadyConfirmed) {
       const note = document.createElement('p');
