@@ -909,6 +909,18 @@
     background: var(--white);
   }
 
+  .gallery-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .gallery-icon img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+  }
+
   .gallery-grid {
     max-width: 1000px;
     margin: 0 auto;
@@ -1336,13 +1348,16 @@
     justify-content: center;
     gap: 2rem;
     flex-wrap: wrap;
+    max-width: 600px;
+    margin: 0 auto;
   }
 
   .gift-card {
     padding: 2rem 2.5rem;
     background: var(--cream);
     border-radius: 4px;
-    min-width: 220px;
+    flex: 1;
+    min-width: 240px;
     transition: transform 0.3s ease;
   }
 
@@ -1368,14 +1383,16 @@
     justify-content: center;
     gap: 2rem;
     flex-wrap: wrap;
+    max-width: 600px;
+    margin: 0 auto;
   }
 
   .gift-address-card {
     padding: 2rem 2rem;
     background: var(--cream);
     border-radius: 4px;
-    min-width: 220px;
-    max-width: 280px;
+    flex: 1;
+    min-width: 240px;
     transition: transform 0.3s ease;
   }
 
@@ -1684,6 +1701,7 @@
 <section class="gallery" id="galeria">
   <h2 class="section-title">Galería</h2>
   <div class="section-ornament"><span>momentos</span></div>
+  <div class="gallery-icon"><img src="photos.svg" alt=""></div>
   <div class="gallery-grid">
     <div class="gallery-item"><span class="gallery-placeholder">Nuestra foto</span></div>
     <div class="gallery-item"><span class="gallery-placeholder">Juntos</span></div>
@@ -1817,8 +1835,8 @@
   <div class="gift-addresses">
     <div class="gift-address-card">
       <p class="gift-address-label">Casa del novio</p>
-      <p class="gift-address-name">ASV. Pedro Miguel Silva Arévalo</p>
-      <p class="gift-address-detail">Mz. A lote 19, Frente a AA.HH Villa Primavera, carretera Sullana-Paita.</p>
+      <p class="gift-address-name">ASV. Pedro Miguel Silva Arévalo, Mz. A lote 19</p>
+      <p class="gift-address-detail">Frente a AA.HH Villa Primavera, carretera Sullana-Paita.</p>
       <a href="https://maps.app.goo.gl/wK8MS8T8guwzLLPQA" target="_blank" style="display:inline-block;padding:0.5rem 1.2rem;background:var(--gold);color:var(--white);text-decoration:none;font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;border-radius:3px;">📍 Ver en mapa</a>
     </div>
     <div class="gift-address-card">
