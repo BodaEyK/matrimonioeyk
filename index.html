@@ -966,11 +966,11 @@
   }
 
   .events-grid {
-    max-width: 900px;
+    max-width: 950px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    gap: 4rem 3rem;
     padding: 2rem;
   }
 
@@ -982,6 +982,12 @@
     position: absolute;
     pointer-events: none;
     z-index: 1;
+    opacity: 0;
+    transition: opacity 0.8s ease 0.3s;
+  }
+
+  .event-card-wrap.visible .card-botanical {
+    opacity: 1;
   }
 
   .event-card-wrap .card-botanical img {
@@ -1406,7 +1412,7 @@
     .gallery-item:nth-child(4) { grid-column: span 1; }
 
     .form-row { grid-template-columns: 1fr; }
-    .events-grid { grid-template-columns: 1fr; }
+    .events-grid { grid-template-columns: 1fr; gap: 3rem; max-width: 400px; }
 
     .envelope-seal      { width: min(70px, 18vw); height: min(70px, 18vw); }
     .envelope-flap-piece { height: 65vh; width: 65vh; }
@@ -1643,6 +1649,7 @@
         <h3 class="event-name">La Fiesta</h3>
         <div class="event-info">
           <strong>Salón de Eventos "Anmar"</strong><br>
+          2do piso<br>
           Sullana, Piura<br><br>
           <strong>7:00 PM</strong><br>
           ¡Prepárate para bailar!
@@ -1998,7 +2005,7 @@
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal, .timeline-item, .event-card-wrap').forEach(el => observer.observe(el));
 
   // ---- RSVP SUBMIT ----
   document.getElementById('rsvpForm').addEventListener('submit', async e => {
