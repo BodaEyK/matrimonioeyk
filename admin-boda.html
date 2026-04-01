@@ -335,8 +335,22 @@
   function downloadQR() { if (!currentModalGuest) return; const canvas = document.querySelector('#modalQR canvas'); if (!canvas) return; const link = document.createElement('a'); link.download = `QR-${currentModalGuest.name.replace(/\s+/g, '_')}.png`; link.href = canvas.toDataURL('image/png'); link.click(); }
 
   function shareWhatsApp() {
-    if (!currentModalGuest) return; const url = buildGuestUrl(currentModalGuest.code);
-    const msg = encodeURIComponent(`💍 ¡Estás invitado(a) a la boda de Edgardo & Kiara! ✨\n\nHola ${currentModalGuest.name}, nos encantaría contar con tu presencia en nuestro día especial.\n\n📱 Ingresa con tu invitación exclusiva aquí:\n${url}\n\nTu código personal: ${currentModalGuest.code}\n\n¡Te esperamos! 🥂`);
+    if (!currentModalGuest) return;
+    const url = buildGuestUrl(currentModalGuest.code);
+    const totalPases = (currentModalGuest.maxCompanions || 0) + 1;
+    const paseText = totalPases === 1 ? 'Pase para 1 persona' : `Pase para ${totalPases} personas`;
+    const msg = encodeURIComponent(
+      `¡Hola, ${currentModalGuest.name}! ❤️✨\n\n` +
+      `Nos hace inmensamente felices invitarte a celebrar nuestra boda, un momento muy especial que queremos compartir contigo.\n\n` +
+      `Encuentra todos los detalles de nuestra celebración en el siguiente enlace:\n\n` +
+      `${url}\n\n` +
+      `Para nosotros es muy especial que nos acompañes, por eso hemos reservado para ti:\n\n` +
+      `• ${paseText}\n\n` +
+      `Por favor, confirma tu asistencia en el link antes mencionado. ¡Estamos ansiosos por celebrar y brindar con todos ustedes!\n` +
+      `❤️\n\n` +
+      `Con todo nuestro cariño:\n` +
+      `Edgardo & Kiara 💕`
+    );
     window.open(`https://wa.me/?text=${msg}`, '_blank');
   }
 
