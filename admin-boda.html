@@ -337,15 +337,16 @@
   function shareWhatsApp() {
     if (!currentModalGuest) return;
     const url = buildGuestUrl(currentModalGuest.code);
-    const totalPases = (currentModalGuest.maxCompanions || 0) + 1;
-    const paseText = totalPases === 1 ? 'Pase para 1 persona' : 'Pase para ' + totalPases + ' personas';
+    const maxComp = currentModalGuest.maxCompanions || 0;
+    const totalPases = maxComp + 1;
+    const paseText = maxComp === 0 ? 'Tu invitaci\u00F3n es personal e individual' : 'Pase para ' + totalPases + ' personas';
     const heart = String.fromCodePoint(0x2764) + String.fromCodePoint(0xFE0F);
     const sparkles = String.fromCodePoint(0x2728);
     const hearts = String.fromCodePoint(0x1F495);
     const bullet = String.fromCodePoint(0x2022);
     const msg = encodeURIComponent(
-      '\u00A1Hola, ' + currentModalGuest.name + '! ' + heart + sparkles + '\n\n' +
-      'Nos hace inmensamente felices invitarte a celebrar nuestra boda, un momento muy especial que queremos compartir contigo.\n\n' +
+      '\u00A1Hola, ' + currentModalGuest.name + '! ' + heart + sparkles + '\n' +
+      'El amor nos encontr\u00F3, nos uni\u00F3 y hoy nos lleva a dar el paso m\u00E1s importante de nuestras vidas. Con inmensa felicidad, queremos invitarlos a ser testigos de nuestra uni\u00F3n en matrimonio.\n\n' +
       'Encuentra todos los detalles de nuestra celebraci\u00F3n en el siguiente enlace:\n\n' +
       url + '\n\n' +
       'Para nosotros es muy especial que nos acompa\u00F1es, por eso hemos reservado para ti:\n\n' +
