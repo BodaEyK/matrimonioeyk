@@ -931,52 +931,54 @@
     object-fit: contain;
   }
 
-  .gallery-grid {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 200px);
-    gap: 12px;
-  }
-
-  .gallery-item {
+  .gallery-slider {
     position: relative;
+    max-width: 500px;
+    margin: 0 auto;
     overflow: hidden;
-    border-radius: 4px;
-    cursor: pointer;
+    border-radius: 6px;
+    aspect-ratio: 4/5;
     background: var(--cream-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.5s ease;
   }
 
-  .gallery-item:hover { transform: scale(1.02); }
-
-  .gallery-item::after {
-    content: '';
+  .gallery-slide {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(138,154,123,0.15), rgba(184,134,11,0.1));
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 1s ease;
   }
 
-  .gallery-item:hover::after { opacity: 1; }
-  .gallery-item:nth-child(1) { grid-row: span 2; }
-  .gallery-item:nth-child(4) { grid-column: span 2; }
+  .gallery-slide.active { opacity: 1; }
 
-  .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-  .gallery-placeholder {
-    font-family: 'Great Vibes', cursive;
-    font-size: 1.3rem;
-    color: var(--sage);
-    opacity: 0.6;
+  .gallery-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
-  .gallery-item:nth-child(1) .gallery-placeholder { font-size: 1.8rem; }
+  .gallery-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+  }
+
+  .gallery-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    padding: 0;
+  }
+
+  .gallery-dot.active {
+    background: var(--gold);
+    transform: scale(1.3);
+  }
 
   /* ======= EVENT DETAILS ======= */
   .event-details {
@@ -1511,6 +1513,8 @@
       background-position: center 30%;
     }
 
+    .hero-content { padding: 0 2rem; }
+
     nav { gap: 1.2rem; flex-wrap: wrap; padding: 1rem; }
     nav a { font-size: 0.6rem; letter-spacing: 2px; }
 
@@ -1524,12 +1528,7 @@
     .timeline-item:nth-child(odd)  .timeline-content,
     .timeline-item:nth-child(even) .timeline-content { width: 100%; text-align: left; margin: 0; }
 
-    .gallery-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(4, 150px);
-    }
-    .gallery-item:nth-child(1) { grid-row: span 1; }
-    .gallery-item:nth-child(4) { grid-column: span 1; }
+    .gallery-slider { max-width: 90vw; }
 
     .form-row { grid-template-columns: 1fr; }
     .events-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -1730,16 +1729,20 @@
   <h2 class="section-title">Galería</h2>
   <div class="section-ornament"><span>momentos</span></div>
   <div class="gallery-icon"><img src="photos.svg" alt=""></div>
-  <div class="gallery-grid">
-    <div class="gallery-item"><span class="gallery-placeholder">Nuestra foto</span></div>
-    <div class="gallery-item"><span class="gallery-placeholder">Juntos</span></div>
-    <div class="gallery-item"><span class="gallery-placeholder">Aventuras</span></div>
-    <div class="gallery-item"><span class="gallery-placeholder">El compromiso</span></div>
-    <div class="gallery-item"><span class="gallery-placeholder">Recuerdos</span></div>
+  <div class="gallery-slider" id="gallerySlider">
+    <div class="gallery-slide active"><img src="galeria-1.jpg" alt=""></div>
+    <div class="gallery-slide"><img src="galeria-2.jpg" alt=""></div>
+    <div class="gallery-slide"><img src="galeria-3.jpg" alt=""></div>
+    <div class="gallery-slide"><img src="galeria-4.jpg" alt=""></div>
+    <div class="gallery-slide"><img src="galeria-5.jpg" alt=""></div>
   </div>
-  <p style="text-align:center;margin-top:2rem;font-size:0.75rem;letter-spacing:2px;color:var(--text-light);">
-    ¡Aquí irán nuestras mejores fotos!
-  </p>
+  <div class="gallery-dots" id="galleryDots">
+    <button class="gallery-dot active" data-index="0"></button>
+    <button class="gallery-dot" data-index="1"></button>
+    <button class="gallery-dot" data-index="2"></button>
+    <button class="gallery-dot" data-index="3"></button>
+    <button class="gallery-dot" data-index="4"></button>
+  </div>
 </section>
 
 <!-- EVENT DETAILS -->
@@ -2232,6 +2235,47 @@
     clearTimeout(toast._timer);
     toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 3500);
   }
+
+  // ---- GALLERY SLIDER ----
+  (function() {
+    const slides = document.querySelectorAll('.gallery-slide');
+    const dots = document.querySelectorAll('.gallery-dot');
+    let current = 0;
+    let timer;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = index;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function next() { goTo((current + 1) % slides.length); }
+
+    function startAuto() { timer = setInterval(next, 4000); }
+    function stopAuto() { clearInterval(timer); }
+
+    dots.forEach(function(dot) {
+      dot.addEventListener('click', function() {
+        stopAuto();
+        goTo(parseInt(this.dataset.index));
+        startAuto();
+      });
+    });
+
+    var slider = document.getElementById('gallerySlider');
+    var touchStartX = 0;
+    slider.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; stopAuto(); });
+    slider.addEventListener('touchend', function(e) {
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (diff > 50) goTo((current + 1) % slides.length);
+      else if (diff < -50) goTo((current - 1 + slides.length) % slides.length);
+      startAuto();
+    });
+
+    startAuto();
+  })();
 
   // ---- PETALS ----
   function createPetal() {
