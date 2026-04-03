@@ -1436,20 +1436,24 @@
 
   /* ======= FOOTER ======= */
   footer {
-    padding: 4rem 2rem;
+    padding: 5rem 2rem;
     text-align: center;
-    background: var(--charcoal);
-    color: rgba(255,255,255,0.6);
+    background: url('footer-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: rgba(255,255,255,0.85);
     position: relative;
   }
 
   footer::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(to right, var(--sage), var(--gold-light), var(--blush));
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 0;
   }
+
+  footer > * { position: relative; z-index: 1; }
 
   .footer-names {
     font-family: 'Great Vibes', cursive;
@@ -1503,6 +1507,10 @@
 
   /* ======= RESPONSIVE ======= */
   @media (max-width: 768px) {
+    .hero {
+      background-position: center 30%;
+    }
+
     nav { gap: 1.2rem; flex-wrap: wrap; padding: 1rem; }
     nav a { font-size: 0.6rem; letter-spacing: 2px; }
 
