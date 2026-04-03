@@ -1816,7 +1816,7 @@
 
     <!-- Pastillas de acompañantes — se construyen en setupGuestForm -->
     <div class="form-group" id="companionPillsGroup" style="display:none;">
-      <p class="companion-pills-label">¿Cuántos acompañantes traerás?</p>
+      <p class="companion-pills-label">¿Cuántas personas asistirán en total?</p>
       <div class="companion-pills" id="companionPills"></div>
       <input type="hidden" id="companionSelect" value="0">
     </div>
@@ -2025,21 +2025,21 @@
     if (rsvpName) { rsvpName.value = guest.name; rsvpName.readOnly = true; rsvpName.style.opacity = '0.7'; }
 
     const max = (guest.maxCompanions === 0 || guest.maxCompanions === '0') ? 0 : (Number(guest.maxCompanions) || 3);
+    const totalPases = max + 1;
     const pillsGroup    = document.getElementById('companionPillsGroup');
     const pillsContainer = document.getElementById('companionPills');
     const hiddenInput   = document.getElementById('companionSelect');
 
     const msgEl = document.getElementById('guestMsg');
-    const firstName = guest.name.split(' ')[0];
 
     if (max === 0) {
       pillsGroup.style.display = 'none';
       hiddenInput.value = '0';
-      msgEl.innerHTML = 'Hola, <strong>' + firstName + '</strong>. Recuerda que tu invitación es personal e individual. Regístrate a continuación.';
+      msgEl.innerHTML = 'Hola, <strong>' + guest.name + '</strong>. Tu invitaci\u00F3n es personal e individual.';
     } else {
       pillsGroup.style.display = 'block';
       pillsContainer.innerHTML = '';
-      for (let i = 1; i <= max; i++) {
+      for (let i = 1; i <= totalPases; i++) {
         const pill = document.createElement('button');
         pill.type = 'button';
         pill.className = 'companion-pill';
@@ -2049,41 +2049,37 @@
         pillsContainer.appendChild(pill);
       }
       hiddenInput.value = '0';
-
-      if (max === 1) {
-        msgEl.innerHTML = 'Hola, <strong>' + firstName + '</strong>. Recuerda que tu invitación te incluye a ti y a <strong>1 persona más</strong>. Regístrala a continuación.';
-      } else {
-        msgEl.innerHTML = 'Hola, <strong>' + firstName + '</strong>. Recuerda que tu invitación te incluye a ti y a <strong>' + max + ' personas más</strong>. Regístralas a continuación.';
-      }
+      msgEl.innerHTML = 'Hola, <strong>' + guest.name + '</strong>. Tu pase es para <strong>' + totalPases + ' personas</strong>. Indica cu\u00E1ntos asistir\u00E1n.';
     }
     msgEl.style.display = 'block';
 
     if (guest.alreadyConfirmed) {
       const note = document.createElement('p');
       note.style.cssText = 'text-align:center;color:var(--sage-dark);font-family:Cormorant Garamond,serif;font-size:1.05rem;font-style:italic;margin-bottom:1rem;';
-      note.textContent = '✅ Ya confirmaste antes. Puedes actualizar tu respuesta si lo necesitas.';
+      note.textContent = '\u2705 Ya confirmaste antes. Puedes actualizar tu respuesta si lo necesitas.';
       const form = document.getElementById('rsvpForm');
       form.insertBefore(note, form.firstChild);
     }
   }
 
-  function selectCompanions(count) {
+  function selectCompanions(total) {
     document.querySelectorAll('.companion-pill').forEach(p => {
-      p.classList.toggle('selected', Number(p.dataset.value) === count);
+      p.classList.toggle('selected', Number(p.dataset.value) === total);
     });
-    document.getElementById('companionSelect').value = count;
+    const companions = total - 1;
+    document.getElementById('companionSelect').value = companions;
 
     const namesContainer = document.getElementById('companionNames');
     namesContainer.innerHTML = '';
 
-    if (count > 0) {
-      for (let i = 1; i <= count; i++) {
+    if (companions > 0) {
+      for (let i = 1; i <= companions; i++) {
         const row = document.createElement('div');
         row.className = 'companion-name-field';
         row.innerHTML = `
           <span class="companion-name-number">${i}</span>
           <div class="form-group">
-            <input type="text" class="companion-name-input" placeholder="Nombre del acompañante ${i}" required>
+            <input type="text" class="companion-name-input" placeholder="Nombre del acompa\u00F1ante ${i}" required>
           </div>`;
         namesContainer.appendChild(row);
       }
