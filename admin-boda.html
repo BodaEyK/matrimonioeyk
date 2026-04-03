@@ -145,15 +145,15 @@
         <input type="text" id="guestName" placeholder="Ej: Carlos Pérez y familia">
       </div>
       <div class="form-field" style="max-width:120px;min-width:120px;">
-        <label>Máx. acompañantes</label>
-        <input type="number" id="maxCompanions" value="3" min="0" max="10">
+        <label>Total personas</label>
+        <input type="number" id="totalPersonas" value="2" min="1" max="10">
       </div>
       <button class="btn btn-primary" onclick="addGuest()">Agregar</button>
     </div>
     <p class="bulk-toggle" onclick="toggleBulk()">📋 Agregar varios a la vez (carga masiva)</p>
     <div class="bulk-area" id="bulkArea">
-      <textarea id="bulkNames" placeholder="Pega aquí los nombres con su número de acompañantes:&#10;Carlos Pérez y familia, 3&#10;Ana García, 0&#10;Luis y Martha Rodríguez, 2&#10;Pedro Sánchez, 1"></textarea>
-      <p class="bulk-hint">Formato: <strong>Nombre, número de acompañantes</strong>. Si no pones número, se usará el valor del campo "Máx. acompañantes" de arriba.</p>
+      <textarea id="bulkNames" placeholder="Pega aquí los nombres con el total de personas:&#10;Carlos Pérez y esposa, 2&#10;Joven Ana García, 1&#10;Luis y familia, 4&#10;Pedro Sánchez y novia, 2"></textarea>
+      <p class="bulk-hint">Formato: <strong>Nombre, total de personas</strong>. Si no pones número, se usará el valor del campo "Total personas" de arriba.</p>
       <button class="btn btn-secondary" onclick="bulkAdd()">Agregar todos</button>
       <div class="bulk-progress" id="bulkProgress">
         <span id="bulkProgressText">Agregando 0 de 0...</span>
@@ -223,28 +223,29 @@
 
   async function addGuest() {
     const nameInput = document.getElementById('guestName');
-    const maxInput = document.getElementById('maxCompanions');
+    const totalInput = document.getElementById('totalPersonas');
     const name = nameInput.value.trim();
     if (!name) return;
+    const total = parseInt(totalInput.value) >= 1 ? parseInt(totalInput.value) : 2;
     const btn = document.querySelector('.add-form .btn-primary');
     btn.textContent = 'Agregando...'; btn.disabled = true;
     try {
-      const data = await apiPost({ action: 'addGuest', name, maxCompanions: parseInt(maxInput.value) >= 0 ? parseInt(maxInput.value) : 3 });
+      const data = await apiPost({ action: 'addGuest', name, maxCompanions: total - 1 });
       if (data.success) { guests.push(data.guest); renderTable(); loadStats(); nameInput.value = ''; nameInput.focus(); }
       else { alert('Error: ' + data.error); }
-    } catch (err) { alert('Error de conexión.'); }
+    } catch (err) { alert('Error de conexi\u00F3n.'); }
     finally { btn.textContent = 'Agregar'; btn.disabled = false; }
   }
 
   function parseBulkLines(text) {
-    const defaultMax = parseInt(document.getElementById('maxCompanions').value) >= 0 ? parseInt(document.getElementById('maxCompanions').value) : 3;
+    const defaultTotal = parseInt(document.getElementById('totalPersonas').value) >= 1 ? parseInt(document.getElementById('totalPersonas').value) : 2;
     return text.split('\n').map(line => line.trim()).filter(line => line.length > 0).map(line => {
       const lastComma = line.lastIndexOf(',');
-      if (lastComma === -1) return { name: line, maxCompanions: defaultMax };
+      if (lastComma === -1) return { name: line, maxCompanions: defaultTotal - 1 };
       const afterComma = line.substring(lastComma + 1).trim();
       const num = parseInt(afterComma);
-      if (!isNaN(num) && num >= 0 && num <= 10) return { name: line.substring(0, lastComma).trim(), maxCompanions: num };
-      return { name: line, maxCompanions: defaultMax };
+      if (!isNaN(num) && num >= 1 && num <= 10) return { name: line.substring(0, lastComma).trim(), maxCompanions: num - 1 };
+      return { name: line, maxCompanions: defaultTotal - 1 };
     }).filter(g => g.name.length > 0);
   }
 
