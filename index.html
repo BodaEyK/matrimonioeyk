@@ -448,7 +448,7 @@
 
   .music-icon-play { color: #fff; font-size: 1.1rem; }
 
-  /* ======= SCROLL INDICATOR (fixed, bottom-left) ======= */
+  /* ======= SCROLL INDICATOR ======= */
   #scrollIndicator {
     position: fixed;
     bottom: 2rem;
@@ -1754,6 +1754,7 @@
   <div class="guest-invitation-msg" id="guestMsg" style="display:none;"></div>
 
   <form class="rsvp-form" id="rsvpForm">
+    
     <div class="form-group">
       <select id="attendSelect" required>
         <option value="" disabled selected>¿Asistirás?</option>
@@ -1829,7 +1830,7 @@
 </footer>
 
 <script>
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwgpOQ81Xb43YlBQT8ij9SnsNBIOY4doCcEafdOHlRNRuvd4xovywWJzKGwgfjzEzK4/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbzeTLGnt2CUtNEcCILpUFFS72UhT6ZnswWhspVJfyTt_axN1atwBcGZqP8BaS6mUtfb/exec';
   const MUSIC_FILE = 'music.mp3';
 
   let currentGuest  = null;
@@ -1962,18 +1963,16 @@
 
   // ---- GUEST FORM SETUP ----
   function setupGuestForm(guest) {
-    const max = (guest.maxCompanions === 0 || guest.maxCompanions === '0') ? 0 : (Number(guest.maxCompanions) || 3);
-    const totalPases = max + 1;
+    const totalPases = Number(guest.totalPasses) || 1;
     const pillsGroup    = document.getElementById('companionPillsGroup');
     const pillsContainer = document.getElementById('companionPills');
     const hiddenInput   = document.getElementById('companionSelect');
     const msgEl = document.getElementById('guestMsg');
 
-    // Por defecto oculto hasta que elija "Sí" en el select
     pillsGroup.style.display = 'none';
 
-    if (max === 0) {
-      hiddenInput.value = '1'; // Pase individual, el total es 1
+    if (totalPases <= 1) {
+      hiddenInput.value = '1';
       msgEl.innerHTML = 'Hola, <strong>' + guest.name + '</strong>. Tu invitación es personal e individual.';
     } else {
       pillsContainer.innerHTML = '';
@@ -2002,15 +2001,14 @@
 
   // Evento para mostrar/ocultar los números dependiendo de si asiste o no
   document.getElementById('attendSelect').addEventListener('change', function() {
+    const totalPases = Number(currentGuest.totalPasses) || 1;
     const pillsGroup = document.getElementById('companionPillsGroup');
-    const max = (currentGuest.maxCompanions === 0 || currentGuest.maxCompanions === '0') ? 0 : (Number(currentGuest.maxCompanions) || 3);
     
-    // Solo mostramos los botones si dice que "sí" y tiene más de 1 pase
-    if (this.value === 'si' && max > 0) {
+    if (this.value === 'si' && totalPases > 1) {
       pillsGroup.style.display = 'block';
     } else {
       pillsGroup.style.display = 'none';
-      document.getElementById('companionSelect').value = '0'; // Reseteamos si dice "no"
+      document.getElementById('companionSelect').value = this.value === 'si' ? '1' : '0'; 
       document.querySelectorAll('.companion-pill').forEach(p => p.classList.remove('selected'));
     }
   });
@@ -2019,7 +2017,7 @@
     document.querySelectorAll('.companion-pill').forEach(p => {
       p.classList.toggle('selected', Number(p.dataset.value) === total);
     });
-    // Guardamos directamente la CANTIDAD TOTAL seleccionada
+    // Guarda el valor real seleccionado por el usuario (ej: 2)
     document.getElementById('companionSelect').value = total;
   }
 
@@ -2096,13 +2094,12 @@
     const btnSpan = btn.querySelector('span');
 
     const attending = document.getElementById('attendSelect').value;
+    const totalPases = Number(currentGuest.totalPasses) || 1;
     let totalAsistentes = 0;
 
-    // Lógica para validar que haya seleccionado un número si asiste
     if (attending === 'si') {
-      const max = (currentGuest.maxCompanions === 0 || currentGuest.maxCompanions === '0') ? 0 : Number(currentGuest.maxCompanions);
-      if (max === 0) {
-        totalAsistentes = 1; // Si es pase individual, es 1 persona
+      if (totalPases <= 1) {
+        totalAsistentes = 1;
       } else {
         totalAsistentes = parseInt(document.getElementById('companionSelect').value) || 0;
         if (totalAsistentes === 0) {
@@ -2117,9 +2114,9 @@
     const payload = {
       action:         'submitRSVP',
       code:           currentGuest.code,
-      name:           currentGuest.name,
+      name:           currentGuest.name, // Usa el nombre exacto de la base de datos
       attending:      attending,
-      companions:     totalAsistentes,
+      companions:     totalAsistentes,   // Manda el número exacto seleccionado (1, 2, 3 o 4)
       restriction:    document.getElementById('musicSuggestion').value.trim(),
       message:        form.querySelector('textarea').value
     };
