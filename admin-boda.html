@@ -496,14 +496,29 @@
     const hearts = String.fromCodePoint(0x1F495);
     const bullet = String.fromCodePoint(0x2022);
     
+    let introText, enlaceText, reservaText, confirmaText;
+    
+    // Logica Plural o Singular
+    if (totalPases === 1) {
+      introText = 'Queremos contarte que, el amor nos encontr\u00F3, nos uni\u00F3 y hoy nos lleva a dar el paso m\u00E1s importante de nuestras vidas. Con inmensa felicidad, queremos invitarte a ser testigo de nuestra uni\u00F3n en matrimonio.';
+      enlaceText = 'Encuentra todos los detalles de nuestra celebraci\u00F3n en el siguiente enlace:';
+      reservaText = 'Para nosotros es muy especial que nos acompa\u00F1es, por eso hemos reservado para ti:';
+      confirmaText = 'Por favor, confirma tu asistencia en el link antes mencionado. \u00A1Estamos ansiosos por celebrar y brindar contigo!';
+    } else {
+      introText = 'Queremos contarte que, el amor nos encontr\u00F3, nos uni\u00F3 y hoy nos lleva a dar el paso m\u00E1s importante de nuestras vidas. Con inmensa felicidad, queremos invitarlos a ser testigos de nuestra uni\u00F3n en matrimonio.';
+      enlaceText = 'Encuentren todos los detalles de nuestra celebraci\u00F3n en el siguiente enlace:';
+      reservaText = 'Para nosotros es muy especial que nos acompa\u00F1en, por eso hemos reservado para ustedes:';
+      confirmaText = 'Por favor, confirmen su asistencia en el link antes mencionado. \u00A1Estamos ansiosos por celebrar y brindar con todos ustedes!';
+    }
+    
     const msg = encodeURIComponent(
-      '\u00A1Hola, ' + currentModalGuest.name + '! ' + heart + sparkles + '\n' +
-      'El amor nos encontr\u00F3, nos uni\u00F3 y hoy nos lleva a dar el paso m\u00E1s importante de nuestras vidas. Con inmensa felicidad, queremos invitarlos a ser testigos de nuestra uni\u00F3n en matrimonio.\n\n' +
-      'Encuentra todos los detalles de nuestra celebraci\u00F3n en el siguiente enlace:\n\n' +
+      '\u00A1Hola, ' + currentModalGuest.name + '! ' + heart + sparkles + '\n\n' +
+      introText + '\n\n' +
+      enlaceText + '\n\n' +
       url + '\n\n' +
-      'Para nosotros es muy especial que nos acompa\u00F1es, por eso hemos reservado para ti:\n\n' +
+      reservaText + '\n\n' +
       bullet + ' ' + paseText + '\n\n' +
-      'Por favor, confirma tu asistencia en el link antes mencionado. \u00A1Estamos ansiosos por celebrar y brindar con todos ustedes!\n' +
+      confirmaText + '\n' +
       heart + '\n\n' +
       'Con todo nuestro cari\u00F1o:\n' +
       'Edgardo & Kiara ' + hearts
