@@ -1582,8 +1582,7 @@
 <div class="welcome-banner" id="welcomeBanner"></div>
 
 <nav id="navbar">
-  <a href="#inicio">Inicio</a>
-  <a href="#historia">Historia</a>
+  <a href="#inicio">Historia</a>
   <a href="#galeria">Galería</a>
   <a href="#ceremonia">Ceremonia</a>
   <a href="#confirmar">Confirmar</a>
@@ -1754,7 +1753,6 @@
   <div class="guest-invitation-msg" id="guestMsg" style="display:none;"></div>
 
   <form class="rsvp-form" id="rsvpForm">
-    
     <div class="form-group">
       <select id="attendSelect" required>
         <option value="" disabled selected>¿Asistirás?</option>
@@ -1909,7 +1907,12 @@
 
       if (currentGuest) {
         const banner = document.getElementById('welcomeBanner');
-        banner.textContent = `✨ ¡Bienvenido(a), ${currentGuest.name}! Estamos felices de contar contigo ✨`;
+        const pases = Number(currentGuest.totalPasses) || 1;
+        if (pases === 1) {
+          banner.textContent = `✨ ¡Bienvenido(a), ${currentGuest.name}! Estamos felices de contar contigo ✨`;
+        } else {
+          banner.textContent = `✨ ¡Bienvenidos, ${currentGuest.name}! Estamos felices de contar con ustedes ✨`;
+        }
         banner.classList.add('show');
         setTimeout(() => banner.classList.remove('show'), 5000);
       }
@@ -1963,7 +1966,9 @@
 
   // ---- GUEST FORM SETUP ----
   function setupGuestForm(guest) {
+    // Lee el número exacto de pases (Pasepara) que viaja desde el Backend
     const totalPases = Number(guest.totalPasses) || 1;
+    
     const pillsGroup    = document.getElementById('companionPillsGroup');
     const pillsContainer = document.getElementById('companionPills');
     const hiddenInput   = document.getElementById('companionSelect');
@@ -1976,6 +1981,8 @@
       msgEl.innerHTML = 'Hola, <strong>' + guest.name + '</strong>. Tu invitación es personal e individual.';
     } else {
       pillsContainer.innerHTML = '';
+      
+      // Crea los botones numéricos desde 1 hasta el total exacto
       for (let i = 1; i <= totalPases; i++) {
         const pill = document.createElement('button');
         pill.type = 'button';
@@ -2013,11 +2020,12 @@
     }
   });
 
+  // Función que se ejecuta al darle clic a un botón numérico
   function selectCompanions(total) {
     document.querySelectorAll('.companion-pill').forEach(p => {
       p.classList.toggle('selected', Number(p.dataset.value) === total);
     });
-    // Guarda el valor real seleccionado por el usuario (ej: 2)
+    // Guarda el valor exacto seleccionado en el input oculto
     document.getElementById('companionSelect').value = total;
   }
 
@@ -2114,9 +2122,9 @@
     const payload = {
       action:         'submitRSVP',
       code:           currentGuest.code,
-      name:           currentGuest.name, // Usa el nombre exacto de la base de datos
+      name:           currentGuest.name,
       attending:      attending,
-      companions:     totalAsistentes,   // Manda el número exacto seleccionado (1, 2, 3 o 4)
+      companions:     totalAsistentes,   // Se envía el número exacto seleccionado
       restriction:    document.getElementById('musicSuggestion').value.trim(),
       message:        form.querySelector('textarea').value
     };
