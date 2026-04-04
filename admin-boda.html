@@ -202,7 +202,7 @@
   document.getElementById('adminPassword').addEventListener('keypress', e => { if (e.key === 'Enter') adminLogin(); });
   if (sessionStorage.getItem('admin_logged') === 'true') document.getElementById('adminLogin').classList.add('hidden');
 
-  const API_URL = 'https://script.google.com/macros/s/AKfycbzAXGmfqR6WJhtVToBuUr_ec52bwmSy0F6BilSup4X2xfWXDcUqKzIYD2uk6TGssi0/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwgpOQ81Xb43YlBQT8ij9SnsNBIOY4doCcEafdOHlRNRuvd4xovywWJzKGwgfjzEzK4/exec';
   const ADMIN_KEY = 'EdgardoKiara2026Admin';
   let guests = [], currentModalGuest = null, isLoading = false;
 
@@ -382,7 +382,8 @@
     try {
       const data = await apiGet({ action: 'getRSVPs' });
       if (data.success && data.rsvps.length > 0) {
-        section.innerHTML = `<h2 style="font-family:Cormorant Garamond,serif;font-size:1.3rem;padding:1.5rem 1rem 0.5rem;">📋 Confirmaciones RSVP (${data.rsvps.length})</h2><div style="overflow-x:auto;"><table><thead><tr><th>Nombre</th><th>¿Asiste?</th><th>Acomp.</th><th>Nombres Acompañantes</th><th>Música</th><th>Mensaje</th><th>Fecha</th></tr></thead><tbody>${data.rsvps.map(r => `<tr><td><strong style="font-weight:400">${r.name}</strong></td><td style="color:${r.attending === 'si' ? 'var(--success)' : 'var(--danger)'}">${r.attending === 'si' ? '✅ Sí' : '❌ No'}</td><td style="text-align:center">${r.companions || 0}</td><td style="font-size:0.8rem">${r.companionNames || '-'}</td><td style="font-size:0.8rem">🎵 ${r.music || '-'}</td><td style="font-size:0.8rem;max-width:180px">${r.message || '-'}</td><td style="font-size:0.75rem;color:var(--text-light)">${r.confirmedAt || '-'}</td></tr>`).join('')}</tbody></table></div>`;
+        // Aquí se eliminó la columna "Nombres Acompañantes" y se ajustó a "Total Personas"
+        section.innerHTML = `<h2 style="font-family:Cormorant Garamond,serif;font-size:1.3rem;padding:1.5rem 1rem 0.5rem;">📋 Confirmaciones RSVP (${data.rsvps.length})</h2><div style="overflow-x:auto;"><table><thead><tr><th>Nombre</th><th>¿Asiste?</th><th>Total Personas</th><th>Música</th><th>Mensaje</th><th>Fecha</th></tr></thead><tbody>${data.rsvps.map(r => `<tr><td><strong style="font-weight:400">${r.name}</strong></td><td style="color:${r.attending === 'si' ? 'var(--success)' : 'var(--danger)'}">${r.attending === 'si' ? '✅ Sí' : '❌ No'}</td><td style="text-align:center;font-weight:bold;">${r.companions || 0}</td><td style="font-size:0.8rem">🎵 ${r.restriction || '-'}</td><td style="font-size:0.8rem;max-width:180px">${r.message || '-'}</td><td style="font-size:0.75rem;color:var(--text-light)">${r.confirmedAt || '-'}</td></tr>`).join('')}</tbody></table></div>`;
       } else if (data.success) { section.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--text-light);">Aún no hay confirmaciones.</p>'; }
     } catch (err) { section.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--danger);">Error al cargar.</p>'; }
   }
