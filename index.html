@@ -477,7 +477,6 @@
     transform: translateY(10px);
   }
 
-  /* Sin círculo — ícono flotando solo */
   .scroll-indicator-icon {
     width: 46px;
     height: 46px;
@@ -1284,41 +1283,6 @@
     box-shadow: 0 3px 12px rgba(184,134,11,0.3);
   }
 
-  /* Companion name fields */
-  .companion-names {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    overflow: hidden;
-    max-height: 0;
-    opacity: 0;
-    transition: max-height 0.4s ease, opacity 0.3s ease;
-  }
-
-  .companion-names.visible {
-    max-height: 400px;
-    opacity: 1;
-  }
-
-  .companion-name-field {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-
-  .companion-name-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    color: var(--gold);
-    min-width: 20px;
-    text-align: center;
-  }
-
-  .companion-name-field .form-group {
-    margin: 0;
-    flex: 1;
-  }
-
   /* ======= GIFTS ======= */
   .gifts {
     padding: 5rem 2rem;
@@ -1552,7 +1516,6 @@
 </head>
 <body>
 
-<!-- LOCK SCREEN -->
 <div class="lock-screen" id="lockScreen">
   <div class="lock-icon"><img src="rings.svg" alt=""></div>
   <h1 class="lock-title">Edgardo & Kiara</h1>
@@ -1567,7 +1530,6 @@
   <p class="lock-qr-hint">Escanea el QR de tu invitación para entrar automáticamente</p>
 </div>
 
-<!-- ENVELOPE SCREEN -->
 <div class="envelope-screen" id="envelopeScreen">
   <div class="envelope-card" id="envelopeContainer">
     <div class="envelope-flaps-container">
@@ -1599,7 +1561,6 @@
   </div>
 </div>
 
-<!-- MUSIC PLAYER -->
 <audio id="bgMusic" loop preload="none"></audio>
 
 <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="Música">
@@ -1611,7 +1572,6 @@
   <span class="music-icon-play">▶</span>
 </button>
 
-<!-- SCROLL INDICATOR -->
 <div id="scrollIndicator">
   <div class="scroll-indicator-icon">
     <img src="desliza.png" alt="desliza">
@@ -1619,10 +1579,8 @@
   <span class="scroll-indicator-label">Desliza</span>
 </div>
 
-<!-- WELCOME BANNER -->
 <div class="welcome-banner" id="welcomeBanner"></div>
 
-<!-- NAVIGATION -->
 <nav id="navbar">
   <a href="#inicio">Inicio</a>
   <a href="#historia">Historia</a>
@@ -1632,7 +1590,6 @@
   <a href="#regalos">Regalos</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero" id="inicio">
   <div class="hero-content">
     <p class="hero-subtitle">Estamos felices de invitarte a nuestra boda</p>
@@ -1646,7 +1603,6 @@
   <div class="hero-scroll-line"><span></span></div>
 </section>
 
-<!-- COUNTDOWN -->
 <section class="countdown-section" id="cuenta">
   <div class="countdown-frame">
     <div class="botanical-piece botanical-aros">
@@ -1682,7 +1638,6 @@
   </div>
 </section>
 
-<!-- LOVE STORY -->
 <section class="love-story" id="historia">
 
   <h2 class="section-title">Nuestra Historia</h2>
@@ -1724,7 +1679,6 @@
   </div>
 </section>
 
-<!-- GALLERY -->
 <section class="gallery" id="galeria">
   <h2 class="section-title">Galería</h2>
   <div class="section-ornament"><span>momentos</span></div>
@@ -1745,7 +1699,6 @@
   </div>
 </section>
 
-<!-- EVENT DETAILS -->
 <section class="event-details" id="ceremonia">
   <h2 class="section-title">La Celebración</h2>
   <div class="section-ornament"><span>detalles</span></div>
@@ -1785,7 +1738,6 @@
   </div>
 </section>
 
-<!-- DRESS CODE -->
 <section class="dresscode">
   <h2 class="section-title">Código de Vestimenta</h2>
   <div class="section-ornament"><span>elegante</span></div>
@@ -1793,7 +1745,6 @@
   <p class="dresscode-text">"Formal / Cocktail — Los colores sugeridos son tonos cálidos y naturales. Recuerda que el blanco es exclusivo para la novia."</p>
 </section>
 
-<!-- RSVP -->
 <section class="rsvp" id="confirmar">
 
   <h2 class="section-title">Confirma tu Asistencia</h2>
@@ -1804,9 +1755,6 @@
 
   <form class="rsvp-form" id="rsvpForm">
     <div class="form-group">
-      <input type="text" placeholder="Tu nombre completo" required>
-    </div>
-    <div class="form-group">
       <select id="attendSelect" required>
         <option value="" disabled selected>¿Asistirás?</option>
         <option value="si">¡Sí, con mucho gusto!</option>
@@ -1814,15 +1762,11 @@
       </select>
     </div>
 
-    <!-- Pastillas de acompañantes — se construyen en setupGuestForm -->
     <div class="form-group" id="companionPillsGroup" style="display:none;">
       <p class="companion-pills-label">¿Cuántas personas asistirán en total?</p>
       <div class="companion-pills" id="companionPills"></div>
       <input type="hidden" id="companionSelect" value="0">
     </div>
-
-    <!-- Campos de nombre — aparecen al elegir cantidad > 0 -->
-    <div class="companion-names" id="companionNames"></div>
 
     <div class="form-group">
       <input type="text" id="musicSuggestion" placeholder="🎵 ¿Qué canción no puede faltar en la fiesta?">
@@ -1838,7 +1782,6 @@
   </div>
 </section>
 
-<!-- GIFTS -->
 <section class="gifts" id="regalos">
   <h2 class="section-title">Mesa de Regalos</h2>
   <div class="section-ornament"><span>con cariño</span></div>
@@ -1879,7 +1822,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-names">E & K</div>
   <p class="footer-text">Nos vemos el 02 de mayo de 2026</p>
@@ -1887,7 +1829,7 @@
 </footer>
 
 <script>
-  const API_URL = 'https://script.google.com/macros/s/AKfycbzAXGmfqR6WJhtVToBuUr_ec52bwmSy0F6BilSup4X2xfWXDcUqKzIYD2uk6TGssi0/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwgpOQ81Xb43YlBQT8ij9SnsNBIOY4doCcEafdOHlRNRuvd4xovywWJzKGwgfjzEzK4/exec';
   const MUSIC_FILE = 'music.mp3';
 
   let currentGuest  = null;
@@ -1898,7 +1840,6 @@
   function setupMusic() {
     const audio = document.getElementById('bgMusic');
     audio.src = MUSIC_FILE;
-    // No cargamos el audio hasta que el usuario interactúe (preload="none")
   }
 
   function playMusic() {
@@ -2021,23 +1962,20 @@
 
   // ---- GUEST FORM SETUP ----
   function setupGuestForm(guest) {
-    const rsvpName = document.querySelector('#rsvpForm input[type="text"]');
-    if (rsvpName) { rsvpName.value = guest.name; rsvpName.readOnly = true; rsvpName.style.opacity = '0.7'; }
-
     const max = (guest.maxCompanions === 0 || guest.maxCompanions === '0') ? 0 : (Number(guest.maxCompanions) || 3);
     const totalPases = max + 1;
     const pillsGroup    = document.getElementById('companionPillsGroup');
     const pillsContainer = document.getElementById('companionPills');
     const hiddenInput   = document.getElementById('companionSelect');
-
     const msgEl = document.getElementById('guestMsg');
 
+    // Por defecto oculto hasta que elija "Sí" en el select
+    pillsGroup.style.display = 'none';
+
     if (max === 0) {
-      pillsGroup.style.display = 'none';
-      hiddenInput.value = '0';
-      msgEl.innerHTML = 'Hola, <strong>' + guest.name + '</strong>. Tu invitaci\u00F3n es personal e individual.';
+      hiddenInput.value = '1'; // Pase individual, el total es 1
+      msgEl.innerHTML = 'Hola, <strong>' + guest.name + '</strong>. Tu invitación es personal e individual.';
     } else {
-      pillsGroup.style.display = 'block';
       pillsContainer.innerHTML = '';
       for (let i = 1; i <= totalPases; i++) {
         const pill = document.createElement('button');
@@ -2049,49 +1987,43 @@
         pillsContainer.appendChild(pill);
       }
       hiddenInput.value = '0';
-      msgEl.innerHTML = 'Hola, <strong>' + guest.name + '</strong>. Tu pase es para <strong>' + totalPases + ' personas</strong>. Indica cu\u00E1ntos asistir\u00E1n.';
+      msgEl.innerHTML = 'Hola, <strong>' + guest.name + '</strong>. Tu pase es para <strong>' + totalPases + ' personas</strong>. Indica cuántos asistirán.';
     }
     msgEl.style.display = 'block';
 
     if (guest.alreadyConfirmed) {
       const note = document.createElement('p');
       note.style.cssText = 'text-align:center;color:var(--sage-dark);font-family:Cormorant Garamond,serif;font-size:1.05rem;font-style:italic;margin-bottom:1rem;';
-      note.textContent = '\u2705 Ya confirmaste antes. Puedes actualizar tu respuesta si lo necesitas.';
+      note.textContent = '✅ Ya confirmaste antes. Puedes actualizar tu respuesta si lo necesitas.';
       const form = document.getElementById('rsvpForm');
       form.insertBefore(note, form.firstChild);
     }
   }
 
+  // Evento para mostrar/ocultar los números dependiendo de si asiste o no
+  document.getElementById('attendSelect').addEventListener('change', function() {
+    const pillsGroup = document.getElementById('companionPillsGroup');
+    const max = (currentGuest.maxCompanions === 0 || currentGuest.maxCompanions === '0') ? 0 : (Number(currentGuest.maxCompanions) || 3);
+    
+    // Solo mostramos los botones si dice que "sí" y tiene más de 1 pase
+    if (this.value === 'si' && max > 0) {
+      pillsGroup.style.display = 'block';
+    } else {
+      pillsGroup.style.display = 'none';
+      document.getElementById('companionSelect').value = '0'; // Reseteamos si dice "no"
+      document.querySelectorAll('.companion-pill').forEach(p => p.classList.remove('selected'));
+    }
+  });
+
   function selectCompanions(total) {
     document.querySelectorAll('.companion-pill').forEach(p => {
       p.classList.toggle('selected', Number(p.dataset.value) === total);
     });
-    const companions = total - 1;
-    document.getElementById('companionSelect').value = companions;
-
-    const namesContainer = document.getElementById('companionNames');
-    namesContainer.innerHTML = '';
-
-    if (companions > 0) {
-      for (let i = 1; i <= companions; i++) {
-        const row = document.createElement('div');
-        row.className = 'companion-name-field';
-        row.innerHTML = `
-          <span class="companion-name-number">${i}</span>
-          <div class="form-group">
-            <input type="text" class="companion-name-input" placeholder="Nombre del acompa\u00F1ante ${i}" required>
-          </div>`;
-        namesContainer.appendChild(row);
-      }
-      namesContainer.classList.add('visible');
-    } else {
-      namesContainer.classList.remove('visible');
-    }
+    // Guardamos directamente la CANTIDAD TOTAL seleccionada
+    document.getElementById('companionSelect').value = total;
   }
 
   // ---- PRE-FILL FROM URL ----
-  // Si hay un código en la URL (?c=CODIGO), se pre-llena el campo
-  // pero el invitado igual debe presionar "Entrar" para verificarlo.
   (() => {
     const urlCode = getUrlParam('c');
     if (urlCode) {
@@ -2130,7 +2062,6 @@
   function updateCountdown() {
     const diff = weddingDate - Date.now();
     if (diff <= 0) {
-      // La boda ya ocurrió
       const countdownEl = document.querySelector('.countdown-grid');
       if (countdownEl) {
         countdownEl.innerHTML = `
@@ -2164,17 +2095,20 @@
     const btn   = form.querySelector('.rsvp-btn');
     const btnSpan = btn.querySelector('span');
 
-    // Recoger nombres de acompañantes
-    const companionCount  = parseInt(document.getElementById('companionSelect').value) || 0;
-    const nameInputs      = form.querySelectorAll('.companion-name-input');
-    const companionNames  = Array.from(nameInputs).map(i => i.value.trim()).filter(Boolean);
+    const attending = document.getElementById('attendSelect').value;
+    let totalAsistentes = 0;
 
-    if (companionCount > 0 && companionNames.length < companionCount) {
-      showRsvpError('Por favor ingresa el nombre de todos los acompañantes.');
-      form.querySelectorAll('.companion-name-input').forEach(inp => {
-        if (!inp.value.trim()) inp.style.borderColor = '#c0392b';
-      });
-      return;
+    // Lógica para validar que haya seleccionado un número si asiste
+    if (attending === 'si') {
+      const max = (currentGuest.maxCompanions === 0 || currentGuest.maxCompanions === '0') ? 0 : Number(currentGuest.maxCompanions);
+      if (max === 0) {
+        totalAsistentes = 1; // Si es pase individual, es 1 persona
+      } else {
+        totalAsistentes = parseInt(document.getElementById('companionSelect').value) || 0;
+        if (totalAsistentes === 0) {
+          return showRsvpError('Por favor selecciona cuántas personas asistirán en total.');
+        }
+      }
     }
 
     btnSpan.textContent = 'Enviando...';
@@ -2183,11 +2117,10 @@
     const payload = {
       action:         'submitRSVP',
       code:           currentGuest.code,
-      name:           form.querySelector('input[type="text"]').value,
-      attending:      document.getElementById('attendSelect').value,
-      companions:     companionCount,
-      companionNames: companionNames.join(', '),
-      music:          document.getElementById('musicSuggestion').value.trim(),
+      name:           currentGuest.name,
+      attending:      attending,
+      companions:     totalAsistentes,
+      restriction:    document.getElementById('musicSuggestion').value.trim(),
       message:        form.querySelector('textarea').value
     };
 
@@ -2201,6 +2134,7 @@
 
       if (data.success) {
         form.style.display = 'none';
+        document.getElementById('guestMsg').style.display = 'none';
         const success = document.getElementById('rsvpSuccess');
         success.style.display = 'block';
         success.textContent = payload.attending === 'si'
